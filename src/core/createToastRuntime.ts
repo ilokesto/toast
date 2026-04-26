@@ -1,16 +1,6 @@
-import { createOverlayStore } from "@ilokesto/overlay";
 import type { OverlayStoreApi } from "@ilokesto/overlay";
+import { createOverlayStore } from "@ilokesto/overlay";
 import type { ReactNode } from "react";
-import { createToastStore } from "./createToastStore";
-import {
-  DEFAULT_ARIA_PROPS,
-  DEFAULT_DURATION,
-  DEFAULT_ICON_THEME,
-  DEFAULT_POSITION,
-  DEFAULT_REMOVE_DELAY,
-  generateToastId,
-  resolveValue,
-} from "./utils";
 import type {
   DefaultToastOptions,
   PromiseToastMessages,
@@ -22,6 +12,16 @@ import type {
   ToastType,
   ToasterId,
 } from "../types/toast";
+import { createToastStore } from "./createToastStore";
+import {
+  DEFAULT_ARIA_PROPS,
+  DEFAULT_DURATION,
+  DEFAULT_ICON_THEME,
+  DEFAULT_POSITION,
+  DEFAULT_REMOVE_DELAY,
+  generateToastId,
+  resolveValue,
+} from "./utils";
 
 type ToastTimer = ReturnType<typeof setTimeout>;
 
@@ -31,9 +31,21 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   const dismissTimers = new Map<ToastId, ToastTimer>();
   const removeTimers = new Map<ToastId, ToastTimer>();
   const listeners = new Set<() => void>();
+  let isPaused = false;
   const view: { limit: number; position: ToastPosition; toastOptions?: DefaultToastOptions } = {
     limit: Number.POSITIVE_INFINITY,
     position: DEFAULT_POSITION as ToastPosition,
+  };
+  const visibleSnapshotCache: {
+    items: ReadonlyArray<ToastItem> | null;
+    limit: number;
+    position: ToastPosition;
+    visibleItems: ReadonlyArray<ToastItem>;
+  } = {
+    items: null,
+    limit: Number.POSITIVE_INFINITY,
+    position: DEFAULT_POSITION as ToastPosition,
+    visibleItems: [],
   };
 
   store.subscribe(() => {
@@ -73,23 +85,42 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   }
 
   function getVisibleItems(items: ReadonlyArray<ToastItem>): ReadonlyArray<ToastItem> {
-    return items
+    if (
+      visibleSnapshotCache.items === items
+      && visibleSnapshotCache.position === view.position
+      && visibleSnapshotCache.limit === view.limit
+    ) {
+      return visibleSnapshotCache.visibleItems;
+    }
+
+    const visibleItems = items
       .filter((item) => item.position === view.position)
       .slice(0, view.limit);
+
+    visibleSnapshotCache.items = items;
+    visibleSnapshotCache.position = view.position;
+    visibleSnapshotCache.limit = view.limit;
+    visibleSnapshotCache.visibleItems = visibleItems;
+
+    return visibleItems;
   }
 
   function getItem(id: ToastId): ToastItem | undefined {
     return store.getSnapshot().find((item) => item.id === id);
   }
 
+  function getRemainingDuration(item: ToastItem, now = Date.now()): number {
+    return item.duration + item.pauseDuration - (now - item.createdAt);
+  }
+
   function scheduleDismiss(item: ToastItem): void {
     clearTimer(dismissTimers, item.id);
 
-    if (!Number.isFinite(item.duration)) {
+    if (!Number.isFinite(item.duration) || item.pausedAt !== null) {
       return;
     }
 
-    const remaining = item.duration - item.pauseDuration;
+    const remaining = getRemainingDuration(item);
 
     if (remaining <= 0) {
       dismiss(item.id);
@@ -132,6 +163,9 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   function addToast(type: ToastType, message: ReactNode, options?: ToastOptions): ToastId {
     const id = options?.id ?? generateToastId();
     const current = getItem(id);
+    const now = Date.now();
+    const isUpdate = current !== undefined;
+    const pausedAt = isPaused ? now : null;
 
     const defaultOptions = view.toastOptions;
     const defaultTypeOptions = defaultOptions?.[type];
@@ -161,13 +195,13 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
       type,
       message,
       status: "visible",
-      createdAt: current?.createdAt ?? Date.now(),
+      createdAt: now,
       toasterId,
-      duration: mergedOptions.duration ?? current?.duration ?? DEFAULT_DURATION[type],
+      duration: mergedOptions.duration ?? DEFAULT_DURATION[type],
       position: mergedOptions.position ?? current?.position ?? DEFAULT_POSITION,
       height: current?.height ?? null,
       pauseDuration: 0,
-      pausedAt: null,
+      pausedAt,
       ariaProps: mergedOptions.ariaProps ?? current?.ariaProps ?? DEFAULT_ARIA_PROPS[type],
       style: mergedOptions.style,
       className: mergedOptions.className,
@@ -179,6 +213,11 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     ensurePresence(id);
     store.add(item);
     clearTimer(removeTimers, id);
+
+    if (isUpdate) {
+      clearTimer(dismissTimers, id);
+    }
+
     scheduleDismiss(item);
 
     return id;
@@ -276,6 +315,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   }
 
   function startPause(): void {
+    isPaused = true;
     store.startPause();
 
     for (const item of store.getSnapshot()) {
@@ -284,6 +324,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   }
 
   function endPause(): void {
+    isPaused = false;
     store.endPause();
 
     for (const item of store.getSnapshot()) {

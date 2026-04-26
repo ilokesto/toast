@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   type CSSProperties,
@@ -56,54 +57,60 @@ function getContainerStyle(position: ToastPosition): CSSProperties {
   return style;
 }
 
-function getStackOffset(
-  items: ReadonlyArray<ToastItem>,
-  index: number,
-  gutter: number,
-): number {
-  return items.slice(0, index).reduce((offset, item) => {
-    return offset + (item.height ?? 0) + gutter;
-  }, 0);
-}
-
-function getToastStyle(position: ToastPosition, offset: number): CSSProperties {
-  const translateY = position.startsWith("top") ? offset : -offset;
-
+function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties {
   return {
-    pointerEvents: "auto",
-    transform: `translateY(${translateY}px)`,
-    transition: "transform 200ms ease, opacity 200ms ease",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: position.endsWith("left")
+      ? "flex-start"
+      : position.endsWith("right")
+        ? "flex-end"
+        : "center",
+    gap: gutter,
   };
 }
 
 function ToastMeasure({
   item,
-  offset,
-  position,
   onHeight,
   children,
 }: {
   readonly item: ToastItem;
-  readonly offset: number;
-  readonly position: ToastPosition;
   readonly onHeight: (id: string, height: number) => void;
   readonly children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = ref.current;
 
     if (element === null) {
       return;
     }
 
-    const nextHeight = element.offsetHeight;
-    onHeight(item.id, nextHeight);
+    const updateHeight = () => {
+      onHeight(item.id, element.offsetHeight);
+    };
+
+    updateHeight();
+
+    if (typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const observer = new ResizeObserver(() => {
+      updateHeight();
+    });
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [item.id, item.message, item.status, onHeight]);
 
   return (
-    <div ref={ref} style={getToastStyle(position, offset)}>
+    <div ref={ref} style={{ width: "fit-content", maxWidth: "100%", pointerEvents: "auto" }}>
       {children}
     </div>
   );
@@ -219,10 +226,15 @@ export function Toaster({
 
   const containerStyleValue = useMemo<CSSProperties>(
     () => ({
-      ...getContainerStyle(position),
+      ...getContainerStyle(activePosition),
       ...containerStyle,
     }),
-    [containerStyle, position],
+    [activePosition, containerStyle],
+  );
+
+  const regionStyle = useMemo<CSSProperties>(
+    () => getRegionStyle(activePosition, gutter),
+    [activePosition, gutter],
   );
 
   const createHelpers = useCallback(
@@ -241,19 +253,16 @@ export function Toaster({
     runtime.endPause();
   }, [runtime]);
 
-  const rows = orderedItems.map((item, index) => {
+  const rows = orderedItems.map((item) => {
     const helpers = createHelpers(item);
-    const offset = getStackOffset(orderedItems, index, gutter);
     const content = renderRow === undefined
-      ? <ToastBar toast={item} position={position} />
+      ? <ToastBar toast={item} position={activePosition} />
       : renderRow(item, helpers);
 
     return (
       <ToastMeasure
         key={item.id}
         item={item}
-        offset={offset}
-        position={position}
         onHeight={runtime.updateHeight}
       >
         {content}
@@ -269,20 +278,33 @@ export function Toaster({
       <style>
         {`
           @keyframes toast-enter {
-            0% { transform: translate3d(var(--toast-enter-x, 0), var(--toast-enter-y, -200%), 0) scale(0.6); opacity: 0.5; }
+            0% { transform: translate3d(var(--toast-enter-x, 0), var(--toast-enter-y, -14px), 0) scale(0.96); opacity: 0; }
             100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
           }
           @keyframes toast-exit {
-            0% { transform: translate3d(0, 0, -1px) scale(1); opacity: 1; }
-            100% { transform: translate3d(var(--toast-exit-x, 0), var(--toast-exit-y, -150%), -1px) scale(0.6); opacity: 0; }
+            0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+            100% { transform: translate3d(var(--toast-exit-x, 0), var(--toast-exit-y, -10px), 0) scale(0.96); opacity: 0; }
           }
           @keyframes toast-spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
           }
-          @keyframes toast-scale {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+          @keyframes toast-icon-circle {
+            0% { transform: scale(0.72) rotate(45deg); opacity: 0; }
+            100% { transform: scale(1) rotate(45deg); opacity: 1; }
+          }
+          @keyframes toast-icon-check {
+            0% { width: 0; height: 0; opacity: 0; }
+            45% { width: 6px; height: 0; opacity: 1; }
+            100% { width: 6px; height: 10px; opacity: 1; }
+          }
+          @keyframes toast-icon-cross-first {
+            0% { transform: translate(-50%, -50%) rotate(45deg) scale(0.6); opacity: 0; }
+            100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); opacity: 1; }
+          }
+          @keyframes toast-icon-cross-second {
+            0% { transform: translate(-50%, -50%) rotate(-45deg) scale(0.6); opacity: 0; }
+            100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); opacity: 1; }
           }
           @media (prefers-reduced-motion: reduce) {
             @keyframes toast-enter {
@@ -293,13 +315,22 @@ export function Toaster({
               0% { opacity: 1; }
               100% { opacity: 0; }
             }
-            .toast-motion-spin { animation: none !important; }
-            .toast-motion-scale { animation: none !important; }
+            .toast-motion-spin,
+            .toast-motion-circle,
+            .toast-motion-check,
+            .toast-motion-cross-first,
+            .toast-motion-cross-second { animation: none !important; }
           }
         `}
       </style>
       <Container className={containerClassName} style={containerStyleValue}>
-        <div role="region" aria-label="Notifications" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+          role="region"
+          aria-label="Notifications"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={regionStyle}
+        >
           {rows}
         </div>
       </Container>

@@ -25,29 +25,32 @@ export const DefaultSuccess = ({ theme }: { theme?: IconTheme }) => {
 
   return (
     <div
-      className="toast-motion-scale"
+      className="toast-motion-circle"
       style={{
         width: 20,
         height: 20,
         background: primary,
         borderRadius: "100%",
         position: "relative",
-        animation: "toast-scale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards",
+        animation: "toast-icon-circle 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards",
       }}
     >
       <div
+        className="toast-motion-check"
         style={{
           boxSizing: "border-box",
           position: "absolute",
           top: "45%",
           left: "50%",
-          width: 6,
-          height: 10,
+          width: 0,
+          height: 0,
           border: `2px solid ${secondary}`,
           borderTop: 0,
           borderLeft: 0,
           transform: "translate(-50%, -50%) rotate(45deg)",
           transformOrigin: "center",
+          animation: "toast-icon-check 0.28s 0.14s cubic-bezier(0.21, 1.02, 0.73, 1) forwards",
+          opacity: 0,
         }}
       />
     </div>
@@ -60,17 +63,18 @@ export const DefaultError = ({ theme }: { theme?: IconTheme }) => {
 
   return (
     <div
-      className="toast-motion-scale"
+      className="toast-motion-circle"
       style={{
         width: 20,
         height: 20,
         background: primary,
         borderRadius: "100%",
         position: "relative",
-        animation: "toast-scale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards",
+        animation: "toast-icon-circle 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards",
       }}
     >
       <div
+        className="toast-motion-cross-first"
         style={{
           position: "absolute",
           top: "50%",
@@ -79,9 +83,12 @@ export const DefaultError = ({ theme }: { theme?: IconTheme }) => {
           height: 2,
           background: secondary,
           transform: "translate(-50%, -50%) rotate(45deg)",
+          animation: "toast-icon-cross-first 0.24s 0.14s cubic-bezier(0.21, 1.02, 0.73, 1) forwards",
+          opacity: 0,
         }}
       />
       <div
+        className="toast-motion-cross-second"
         style={{
           position: "absolute",
           top: "50%",
@@ -90,6 +97,8 @@ export const DefaultError = ({ theme }: { theme?: IconTheme }) => {
           height: 2,
           background: secondary,
           transform: "translate(-50%, -50%) rotate(-45deg)",
+          animation: "toast-icon-cross-second 0.24s 0.2s cubic-bezier(0.21, 1.02, 0.73, 1) forwards",
+          opacity: 0,
         }}
       />
     </div>

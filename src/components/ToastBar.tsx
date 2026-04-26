@@ -11,18 +11,17 @@ export interface ToastBarProps {
 
 const getMotionStyle = (toast: ToastItem, position: ToastPosition): CSSProperties => {
   const isClosing = toast.status === "closing";
-  const factor = position.startsWith("top") ? -1 : 1;
   const isCenter = position.endsWith("center");
 
-  const enterAnimation = `toast-enter 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards`;
-  const exitAnimation = `toast-exit 0.4s forwards cubic-bezier(0.06, 0.71, 0.55, 1)`;
+  const enterAnimation = `toast-enter 220ms cubic-bezier(0.21, 1.02, 0.73, 1) forwards`;
+  const exitAnimation = `toast-exit 180ms cubic-bezier(0.06, 0.71, 0.55, 1) forwards`;
 
   return {
     animation: isClosing ? exitAnimation : enterAnimation,
-    "--toast-enter-y": `${factor * 20}px`,
-    "--toast-exit-y": `${factor * -20}px`,
-    "--toast-enter-x": isCenter ? "0px" : position.endsWith("left") ? "-20px" : "20px",
-    "--toast-exit-x": isCenter ? "0px" : position.endsWith("left") ? "-20px" : "20px",
+    "--toast-enter-y": position.startsWith("top") ? "-14px" : "14px",
+    "--toast-exit-y": position.startsWith("top") ? "-10px" : "10px",
+    "--toast-enter-x": isCenter ? "0px" : position.endsWith("left") ? "-18px" : "18px",
+    "--toast-exit-x": isCenter ? "0px" : position.endsWith("left") ? "-14px" : "14px",
   } as CSSProperties;
 };
 
@@ -38,10 +37,12 @@ export const ToastBar = ({ toast, position, style, children }: ToastBarProps) =>
     lineHeight: 1.3,
     willChange: "transform, opacity",
     boxShadow: "0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05)",
+    width: "fit-content",
     maxWidth: 350,
     pointerEvents: "auto",
-    padding: "8px 10px",
+    padding: "10px 12px",
     borderRadius: 8,
+    transition: "box-shadow 180ms ease, background-color 180ms ease, color 180ms ease",
     ...getMotionStyle(toast, position ?? toast.position ?? "top-center"),
     ...toast.style,
     ...style,
@@ -49,7 +50,7 @@ export const ToastBar = ({ toast, position, style, children }: ToastBarProps) =>
 
   const icon = <ToastIcon type={toast.type} icon={toast.icon} iconTheme={toast.iconTheme} />;
   const message = (
-    <div style={{ display: "flex", justifyContent: "center", margin: "4px 10px", color: "inherit", flex: 1 }}>
+    <div style={{ display: "flex", alignItems: "center", margin: "2px 4px 2px 8px", color: "inherit", flex: 1 }}>
       {toast.message}
     </div>
   );

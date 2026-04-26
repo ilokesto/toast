@@ -22,7 +22,6 @@ export function createToastStore(): ToastStoreApi {
             ? {
                 ...current,
                 ...item,
-                createdAt: current.createdAt,
                 toasterId: current.toasterId,
               }
             : current,
@@ -94,6 +93,7 @@ export function createToastStore(): ToastStoreApi {
       }
 
       return {
+        ...prev,
         pausedAt: startedAt,
         items: prev.items.map((item) => ({
           ...item,
