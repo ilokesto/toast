@@ -1,0 +1,75 @@
+---
+title: "Practical guide"
+description: "Configure defaults, route multiple toasters, customize rows, and choose top-layer rendering."
+---
+
+# Practical guide
+
+## Configure defaults and individual calls
+
+Options merge in this order: global `toastOptions`, per-type defaults, then call options. Nested `style` and `ariaProps` merge; `iconTheme` uses the most specific supplied value.
+
+```tsx lineNumbers
+<Toaster
+  position="bottom-center"
+  limit={4}
+  gutter={12}
+  toastOptions={{
+    duration: 5000,
+    style: { background: '#111827', color: '#fff' },
+    success: { duration: 2000 },
+  }}
+/>
+
+toast.success('Published', { duration: 3000 });
+```
+
+The call uses 3000 ms, while retaining the global style. A per-toast `position` can differ from the active toaster position, but only items matching the toaster's configured active position are rendered; use another toaster when you need simultaneous stacks at different positions.
+
+## Route to multiple toasters
+
+```tsx lineNumbers
+<>
+  <Toaster toasterId="app" position="top-right" />
+  <Toaster toasterId="editor" position="bottom-center" />
+</>
+
+toast.success('Draft saved', { toasterId: 'editor' });
+toast.dismiss(undefined, 'editor');
+```
+
+Use unique `toasterId` values. Two mounted toasters with the same id compete for one registry entry and are not an isolation strategy.
+
+## Promise and loading flows
+
+`toast.promise` updates one id and preserves the original promise semantics. A standalone `toast.loading` has infinite duration, so retain its id and update it by reusing that id or remove it explicitly.
+
+```tsx
+const id = toast.loading('Uploading...');
+try {
+  await upload();
+  toast.success('Uploaded', { id });
+} catch (error) {
+  toast.error(`Upload failed: ${String(error)}`, { id });
+}
+```
+
+## Customize rows
+
+Use `Toaster` children for complete row control; helpers provide animated `dismiss` and immediate `remove`. Wrap non-custom items in `ToastBar` when you want the built-in icon, accessibility attributes, and motion but different layout.
+
+```tsx
+<Toaster>
+  {(item, { dismiss }) => (
+    <ToastBar toast={item}>
+      {({ icon, message }) => <button onClick={dismiss}>{icon}{message}</button>}
+    </ToastBar>
+  )}
+</Toaster>
+```
+
+A fully custom child owns its own `role` and live-region behavior.
+
+## Use top-layer when stacking contexts interfere
+
+`<Toaster transport="top-layer" />` uses a manual popover when supported and falls back to an inline fixed container otherwise. Use it when application transforms or z-index contexts cover notifications. Position and container overrides still apply.

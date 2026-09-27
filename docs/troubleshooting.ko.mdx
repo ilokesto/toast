@@ -1,0 +1,38 @@
+---
+title: "문제 해결"
+description: "누락된 runtime, 보이지 않는 위치, 끝나지 않는 loading, custom 접근성, stacking 문제를 해결합니다."
+---
+
+# 문제 해결
+
+## `No toaster runtime registered` 오류가 발생함
+
+호출 전에 같은 `toasterId`의 `<Toaster>`를 마운트하세요. 모듈을 평가할 때나 Toaster를 처음 만드는 렌더링 중에는 `toast.*`를 호출하지 마세요. 이벤트 또는 마운트 이후 이펙트에서 호출해야 합니다.
+
+## 호출은 성공하지만 행이 보이지 않음
+
+`toasterId`와 위치를 확인하세요. 런타임은 활성 위치(`toastOptions.position` 또는 `position`)와 일치하는 항목만 `limit` 개까지 렌더링합니다. 호출별 위치가 다른 알림은 원본 스토어에 남지만 해당 스택에는 표시되지 않습니다.
+
+## 로딩 알림이 끝나지 않음
+
+로딩 알림의 표시 시간은 `Infinity`입니다. `toast.promise`를 사용하거나 같은 ID를 성공 또는 오류 상태로 갱신하거나 `toast.dismiss(id)` / `toast.remove(id)`를 호출하세요.
+
+## 닫기가 예상보다 느림
+
+`dismiss`는 종료 모션을 시작하고 완전히 제거하기 전에 `removeDelay`(기본 1000ms)만큼 기다립니다. 더 짧은 `removeDelay`를 사용하거나, 즉시 정리하려면 `remove`를 사용하세요.
+
+## 사용자 지정 콘텐츠를 스크린 리더가 읽지 않음
+
+`ToastBar`가 렌더링하는 `toast.custom`에는 정중한 상태 알림을 위한 기본값이 적용됩니다. `Toaster`의 `children`으로 행 전체를 교체하면 해당 렌더러가 `role`, `aria-live`, `aria-atomic`을 직접 관리해야 합니다.
+
+## 알림이 애플리케이션 UI 뒤에 표시됨
+
+인라인 컨테이너는 고정 위치와 z-index 9999를 사용하지만, transform이 적용된 상위 요소나 더 강한 스태킹 컨텍스트가 방해할 수 있습니다. Toaster를 트리의 더 높은 곳에 마운트하거나 `transport="top-layer"`를 사용하세요. 지원하지 않는 브라우저에서는 인라인 방식으로 대체됩니다.
+
+## 두 Toaster 스택이 서로 영향을 줌
+
+각각 고유한 `toasterId`를 지정하고 호출도 해당 ID로 보내세요. ID가 같은 Toaster 두 개를 마운트하면 나중에 등록된 항목이 이전 레지스트리 항목을 대체합니다.
+
+## `useToaster`가 오류를 던짐
+
+이 훅은 `Toaster` 내부에서 만든 컨텍스트를 읽으므로 Toaster 옆이나 위가 아니라 하위의 사용자 지정 렌더러에서 실행해야 합니다. 저수준 통합에는 런타임을 만들고 `useToastItems(runtime)`을 명시적으로 사용하세요.

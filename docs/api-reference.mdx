@@ -1,0 +1,53 @@
+---
+title: "API reference"
+description: "Exact Toast facade, component props, hooks, runtime methods, defaults, and types."
+---
+
+# API reference
+
+All public APIs are exported from `@ilokesto/toast`.
+
+## `toast`
+
+`toast(message, options?)`, `.success`, `.error`, `.loading`, and `.custom` return a `ToastId` string. `.promise(promiseOrFactory, messages, options?)` returns `Promise<TData>`, updates one toast from loading to success/error, and rethrows rejection.
+
+`toast.dismiss(id?, toasterId?)` starts closing one or all items in a runtime. `toast.remove(id?, toasterId?)` removes immediately. Both use the default runtime when `toasterId` is omitted.
+
+## `Toaster`
+
+| Prop | Type | Default |
+|---|---|---|
+| `toasterId` | `string` | `'default'` |
+| `position` | `ToastPosition` | `'top-right'` |
+| `transport` | `'inline' \| 'top-layer'` | `'inline'` |
+| `limit` | `number` | `20` |
+| `reverseOrder` | `boolean` | `false` |
+| `gutter` | `number` | `8` |
+| `containerStyle`, `containerClassName` | container styling | unset |
+| `toastOptions` | `DefaultToastOptions` | unset |
+| `children` | `(item, helpers) => ReactNode` | default `ToastBar` |
+
+`toastOptions.position` takes precedence over `position` for the active stack. `limit` is clamped to zero or greater. `children` helpers are `{ dismiss, remove }`.
+
+## `ToastOptions`
+
+`id`, `toasterId`, `duration`, `position`, `ariaProps`, `style`, `className`, `icon`, `iconTheme`, and `removeDelay`. Positions are `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center`, and `bottom-right`.
+
+Default durations: blank 4000 ms, success 2000 ms, error 4000 ms, loading `Infinity`, custom 4000 ms. Default `removeDelay` is 1000 ms.
+
+Default accessibility: error uses `{ role: 'alert', 'aria-live': 'assertive', 'aria-atomic': true }`; all other types use `status`, `polite`, and atomic true.
+
+## Rendering APIs
+
+- `ToastBar({ toast, position?, style?, children? })` renders the default accessible animated card.
+- `ToastIcon({ type, icon, iconTheme })` renders custom or built-in status icons.
+- `useToaster()` must run under `<Toaster>` and returns `{ toasts, handlers }`. Handlers are `updateHeight`, `startPause`, `endPause`, and `calculateOffset`.
+- `useToastItems(runtime)` subscribes to an explicit `ToastRuntimeApi`; it is a low-level hook.
+
+## `createToastRuntime(toasterId)`
+
+Creates an unregistered runtime. Methods are `addToast`, `configureView`, `promiseToast`, `dismiss`, `closeAll`, `remove`, `clear`, `updateHeight`, `getRawSnapshot`, `startPause`, `endPause`, `subscribe`, `getSnapshot`, and `getInitialSnapshot`. The normal facade cannot find it unless internal registration is used, so prefer `Toaster` for application UI.
+
+## Exported types
+
+`Renderable`, ids, type/status/position/transport unions, `ToastItem`, `ToastState`, `ToastOptions`, `DefaultToastOptions`, `IconTheme`, store/facade/runtime contracts, `ToasterProps`, `ToastBarProps`, `UseToasterResult`, `ToastRowHelpers`, and `PromiseToastMessages`.
