@@ -6,6 +6,12 @@ A React toast package built for practical `react-hot-toast` replacement quality.
 
 `@ilokesto/toast` provides a provider-scoped toast runtime, a familiar `toast.*` facade, a polished default renderer, headless hooks, and an optional top-layer transport. Internally it uses `@ilokesto/overlay` for presence lifecycle only, while toast policy and rendering stay inside this package.
 
+## Documentation
+
+- Full docs: [English](https://ilokesto.ayden94.com/en/toast) · [한국어](https://ilokesto.ayden94.com/ko/toast)
+- Source: [packages/toast](https://github.com/ilokesto/ilokesto/tree/main/packages/toast)
+- npm: [@ilokesto/toast](https://www.npmjs.com/package/@ilokesto/toast)
+
 ## Features
 
 - Familiar facade: `toast()`, `toast.success()`, `toast.error()`, `toast.loading()`, `toast.custom()`, `toast.promise()`

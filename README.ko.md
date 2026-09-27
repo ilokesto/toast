@@ -6,6 +6,12 @@
 
 `@ilokesto/toast`는 provider-scoped toast runtime, 익숙한 `toast.*` facade, 기본 렌더러, headless hook, 그리고 선택적인 top-layer transport를 제공합니다. 내부적으로는 `@ilokesto/overlay`를 presence lifecycle 용도로만 사용하고, toast 정책과 렌더링은 이 패키지 안에서 처리합니다.
 
+## 문서
+
+- 전체 문서: [English](https://ilokesto.ayden94.com/en/toast) · [한국어](https://ilokesto.ayden94.com/ko/toast)
+- 소스: [packages/toast](https://github.com/ilokesto/ilokesto/tree/main/packages/toast)
+- npm: [@ilokesto/toast](https://www.npmjs.com/package/@ilokesto/toast)
+
 ## Features
 
 - 익숙한 facade: `toast()`, `toast.success()`, `toast.error()`, `toast.loading()`, `toast.custom()`, `toast.promise()`
