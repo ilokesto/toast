@@ -1,6 +1,6 @@
 import { createContext, useEffect, useMemo } from "react";
 import { createToastRuntime } from "../core/createToastRuntime";
-import { registerRuntime, unregisterRuntime } from "../core/registry";
+import { registerRuntime } from "../core/registry";
 import { DEFAULT_TOASTER_ID } from "../core/utils";
 import type { ToasterId, ToastRuntimeApi } from "../types/toast";
 
@@ -10,11 +10,11 @@ export function useToasterRuntime(toasterId: ToasterId = DEFAULT_TOASTER_ID): To
   const runtime = useMemo(() => createToastRuntime(toasterId), [toasterId]);
 
   useEffect(() => {
-    registerRuntime(runtime);
+    const unregister = registerRuntime(runtime);
 
     return () => {
       runtime.clear();
-      unregisterRuntime(runtime.toasterId);
+      unregister();
     };
   }, [runtime]);
 

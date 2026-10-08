@@ -2,12 +2,14 @@ import type { ToasterId, ToastRuntimeApi } from "../types/toast";
 
 const runtimeMap = new Map<ToasterId, ToastRuntimeApi>();
 
-export function registerRuntime(runtime: ToastRuntimeApi): void {
+export function registerRuntime(runtime: ToastRuntimeApi): () => void {
   runtimeMap.set(runtime.toasterId, runtime);
-}
 
-export function unregisterRuntime(toasterId: ToasterId): void {
-  runtimeMap.delete(toasterId);
+  return () => {
+    if (runtimeMap.get(runtime.toasterId) === runtime) {
+      runtimeMap.delete(runtime.toasterId);
+    }
+  };
 }
 
 export function getRuntime(toasterId: ToasterId): ToastRuntimeApi | undefined {

@@ -6,6 +6,7 @@ import type {
   ToastFacade,
   ToastId,
   ToastOptions,
+  ToastType,
   ToasterId,
 } from "../types/toast";
 
@@ -14,31 +15,31 @@ function resolveToasterId(options?: ToastOptions): ToasterId {
 }
 
 function createToast(message: Renderable, options?: ToastOptions): ToastId {
+  return addToast("blank", message, options);
+}
+
+function addToast(type: ToastType, message: Renderable, options?: ToastOptions): ToastId {
   const runtime = requireRuntime(resolveToasterId(options));
-  return runtime.addToast("blank", message, options);
+  return runtime.addToast(type, message, options);
 }
 
 createToast.success = function success(message: Renderable, options?: ToastOptions): ToastId {
-  const runtime = requireRuntime(resolveToasterId(options));
-  return runtime.addToast("success", message, options);
+  return addToast("success", message, options);
 };
 
 createToast.error = function error(message: Renderable, options?: ToastOptions): ToastId {
-  const runtime = requireRuntime(resolveToasterId(options));
-  return runtime.addToast("error", message, options);
+  return addToast("error", message, options);
 };
 
 createToast.loading = function loading(message: Renderable, options?: ToastOptions): ToastId {
-  const runtime = requireRuntime(resolveToasterId(options));
-  return runtime.addToast("loading", message, {
+  return addToast("loading", message, {
     ...options,
     duration: Number.POSITIVE_INFINITY,
   });
 };
 
 createToast.custom = function custom(message: Renderable, options?: ToastOptions): ToastId {
-  const runtime = requireRuntime(resolveToasterId(options));
-  return runtime.addToast("custom", message, options);
+  return addToast("custom", message, options);
 };
 
 createToast.promise = function promiseFn<TData>(
