@@ -147,9 +147,14 @@ src/
     ToastBar.tsx
     ToastProvider.tsx
     Toaster.tsx
+    ToastContainer.tsx
+    ToastMeasure.tsx
+    toasterStyles.ts
     icons.tsx
   core/
     createToastRuntime.ts
+    createToastTimers.ts
+    resolveToastOptions.ts
     createToastStore.ts
     registry.ts
     toast.ts
@@ -167,6 +172,9 @@ src/
 ### `src/components`
 
 - `Toaster.tsx` → mounts the visible toast stack, configures runtime view options, and provides the default container
+- `ToastContainer.tsx` → inline/native popover transports, positioning reset and browser fallback
+- `ToastMeasure.tsx` → row height measurement and ResizeObserver cleanup
+- `toasterStyles.ts` → unchanged animation CSS rendered by Toaster
 - `ToastBar.tsx` → composable default renderer primitive for a single toast row
 - `icons.tsx` → built-in spinner and status icon components used by the default renderer
 - `ToastProvider.tsx` → creates and registers provider-scoped runtimes by `toasterId`
@@ -174,7 +182,9 @@ src/
 ### `src/core`
 
 - `toast.ts` → the public `toast.*` facade
-- `createToastRuntime.ts` → toast policy layer for ids, timers, promise transitions, dismiss/remove behavior, and visible-set calculation
+- `createToastRuntime.ts` → command order, toast/overlay coordination, pause state, promise transitions and visible snapshot identity
+- `createToastTimers.ts` → dismiss/remove timeout ownership, remaining duration and cancellation
+- `resolveToastOptions.ts` → pure view-default/type-default/per-toast option merging
 - `createToastStore.ts` → raw toast state store
 - `registry.ts` → runtime registration by `toasterId`
 - `utils.ts` → default durations, ids, icon themes, and small helpers
@@ -191,6 +201,24 @@ src/
 ### `src/index.ts`
 
 - re-exports the public runtime, renderer, hook, and type surface
+
+### Reading a toast operation
+
+Follow `toast.ts` into `createToastRuntime` for command order. Option resolution is
+a pure calculation; timers only invoke runtime commands and never mutate stores.
+Runtime continues to own the sequence between overlay presence and toast state.
+
+```text
+add/update -> resolve options -> ensure overlay presence -> write toast -> schedule dismiss
+dismiss -> cancel dismiss timer -> close overlay -> mark toast closing -> schedule remove
+remove -> cancel both timers -> remove overlay -> remove toast
+```
+
+Pause cancels dismissal, not closing removal. Resume schedules the remaining
+duration, including time spent paused. Reusing an ID cancels its old removal.
+The visible snapshot cache stays in the runtime to preserve subscription identity.
+Toaster reads that snapshot; transport, measurement and CSS modules keep browser
+details out of the row-rendering flow without adding wrapper DOM.
 
 ## Exports
 

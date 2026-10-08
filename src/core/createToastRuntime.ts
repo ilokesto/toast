@@ -13,23 +13,21 @@ import type {
   ToasterId,
 } from "../types/toast";
 import { createToastStore } from "./createToastStore";
+import { createToastTimers } from "./createToastTimers";
+import { resolveToastOptions } from "./resolveToastOptions";
 import {
   DEFAULT_ARIA_PROPS,
   DEFAULT_DURATION,
-  DEFAULT_ICON_THEME,
   DEFAULT_POSITION,
   DEFAULT_REMOVE_DELAY,
   generateToastId,
   resolveValue,
 } from "./utils";
 
-type ToastTimer = ReturnType<typeof setTimeout>;
-
 export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   const store = createToastStore();
   const overlayStore: OverlayStoreApi = createOverlayStore();
-  const dismissTimers = new Map<ToastId, ToastTimer>();
-  const removeTimers = new Map<ToastId, ToastTimer>();
+  const timers = createToastTimers(dismiss, remove);
   const listeners = new Set<() => void>();
   let isPaused = false;
   const view: { limit: number; position: ToastPosition; toastOptions?: DefaultToastOptions } = {
@@ -53,30 +51,6 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
       listener();
     }
   });
-
-  function clearTimer(timerMap: Map<ToastId, ToastTimer>, id: ToastId): void {
-    const timer = timerMap.get(id);
-
-    if (timer === undefined) {
-      return;
-    }
-
-    clearTimeout(timer);
-    timerMap.delete(id);
-  }
-
-  function clearAllTimers(): void {
-    for (const timer of dismissTimers.values()) {
-      clearTimeout(timer);
-    }
-
-    for (const timer of removeTimers.values()) {
-      clearTimeout(timer);
-    }
-
-    dismissTimers.clear();
-    removeTimers.clear();
-  }
 
   function notify(): void {
     for (const listener of listeners) {
@@ -109,43 +83,6 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     return store.getSnapshot().find((item) => item.id === id);
   }
 
-  function getRemainingDuration(item: ToastItem, now = Date.now()): number {
-    return item.duration + item.pauseDuration - (now - item.createdAt);
-  }
-
-  function scheduleDismiss(item: ToastItem): void {
-    clearTimer(dismissTimers, item.id);
-
-    if (!Number.isFinite(item.duration) || item.pausedAt !== null) {
-      return;
-    }
-
-    const remaining = getRemainingDuration(item);
-
-    if (remaining <= 0) {
-      dismiss(item.id);
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      dismissTimers.delete(item.id);
-      dismiss(item.id);
-    }, remaining);
-
-    dismissTimers.set(item.id, timer);
-  }
-
-  function scheduleRemove(item: ToastItem): void {
-    clearTimer(removeTimers, item.id);
-
-    const timer = setTimeout(() => {
-      removeTimers.delete(item.id);
-      remove(item.id);
-    }, item.removeDelay ?? DEFAULT_REMOVE_DELAY);
-
-    removeTimers.set(item.id, timer);
-  }
-
   function ensurePresence(id: ToastId): void {
     overlayStore.open({
       id,
@@ -161,28 +98,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     const isUpdate = current !== undefined;
     const pausedAt = isPaused ? now : null;
 
-    const defaultOptions = view.toastOptions;
-    const defaultTypeOptions = defaultOptions?.[type];
-    const mergedOptions: ToastOptions = {
-      ...defaultOptions,
-      ...defaultTypeOptions,
-      ...options,
-      style: {
-        ...(defaultOptions?.style ?? {}),
-        ...(defaultTypeOptions?.style ?? {}),
-        ...(options?.style ?? {}),
-      },
-      ariaProps: {
-        ...(DEFAULT_ARIA_PROPS[type] ?? {}),
-        ...(defaultOptions?.ariaProps ?? {}),
-        ...(defaultTypeOptions?.ariaProps ?? {}),
-        ...(options?.ariaProps ?? {}),
-      },
-      iconTheme: options?.iconTheme
-        ?? defaultTypeOptions?.iconTheme
-        ?? defaultOptions?.iconTheme
-        ?? (type === "success" || type === "error" ? DEFAULT_ICON_THEME[type] : undefined),
-    };
+    const mergedOptions = resolveToastOptions(type, view.toastOptions, options);
 
     const item: ToastItem = {
       id,
@@ -206,13 +122,13 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
 
     ensurePresence(id);
     store.add(item);
-    clearTimer(removeTimers, id);
+    timers.clearRemove(id);
 
     if (isUpdate) {
-      clearTimer(dismissTimers, id);
+      timers.clearDismiss(id);
     }
 
-    scheduleDismiss(item);
+    timers.scheduleDismiss(item);
 
     return id;
   }
@@ -274,10 +190,10 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
         continue;
       }
 
-      clearTimer(dismissTimers, targetId);
+      timers.clearDismiss(targetId);
       overlayStore.close(targetId);
       store.dismiss(targetId);
-      scheduleRemove(current);
+      timers.scheduleRemove(current);
     }
   }
 
@@ -289,15 +205,15 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     const targets = id === undefined ? store.getSnapshot().map((item) => item.id) : [id];
 
     for (const targetId of targets) {
-      clearTimer(dismissTimers, targetId);
-      clearTimer(removeTimers, targetId);
+      timers.clearDismiss(targetId);
+      timers.clearRemove(targetId);
       overlayStore.remove(targetId);
       store.remove(targetId);
     }
   }
 
   function clear(): void {
-    clearAllTimers();
+    timers.clear();
     overlayStore.clear();
     store.clear();
   }
@@ -315,7 +231,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     store.startPause();
 
     for (const item of store.getSnapshot()) {
-      clearTimer(dismissTimers, item.id);
+      timers.clearDismiss(item.id);
     }
   }
 
@@ -325,7 +241,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
 
     for (const item of store.getSnapshot()) {
       if (item.status === "visible") {
-        scheduleDismiss(item);
+        timers.scheduleDismiss(item);
       }
     }
   }

@@ -122,4 +122,43 @@ describe("Toaster top-layer positioning", () => {
       container.style.cssText.indexOf("bottom"),
     );
   });
+
+  it("falls back to inline positioning when the browser has no popover support", () => {
+    // Given
+    Reflect.deleteProperty(HTMLElement.prototype, "showPopover");
+
+    // When
+    const container = renderTopLayerToaster("bottom-center");
+
+    // Then
+    expect(container.getAttribute("popover")).toBeNull();
+    expect(container.style.bottom).toBe("0px");
+    expect(container.style.left).toBe("50%");
+    expect(container.style.transform).toBe("translateX(-50%)");
+    expect(container.style.inset).toBe("");
+    expect(showPopover).not.toHaveBeenCalled();
+    cleanup();
+    expect(hidePopover).not.toHaveBeenCalled();
+  });
+
+  it("keeps the popover open during position updates and hides it on unmount", () => {
+    // Given
+    const view = render(
+      <Toaster toasterId={TOASTER_ID} position="top-left" transport="top-layer" />,
+    );
+    const container = screen.getByRole("region", { name: "Notifications" }).parentElement;
+
+    // When
+    view.rerender(
+      <Toaster toasterId={TOASTER_ID} position="bottom-right" transport="top-layer" />,
+    );
+
+    // Then
+    expect(screen.getByRole("region", { name: "Notifications" }).parentElement).toBe(container);
+    expect(showPopover).toHaveBeenCalledOnce();
+    expect(hidePopover).not.toHaveBeenCalled();
+
+    view.unmount();
+    expect(hidePopover).toHaveBeenCalledOnce();
+  });
 });
