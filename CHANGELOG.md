@@ -1,5 +1,19 @@
 # @ilokesto/toast
 
+## 2.0.1
+
+### Patch Changes
+
+- 3143e12: Ensure stale Toaster cleanup cannot unregister a replacement runtime and simplify typed toast facade dispatch.
+- c72cdd4: Separate toast timer ownership and option resolution from runtime commands, and
+  separate Toaster measurement, transports and static styles without changing its
+  public API or presentation.
+- Updated dependencies [6b429a4]
+- Updated dependencies [e3b4d79]
+- Updated dependencies [a921e3f]
+  - @ilokesto/overlay@2.0.1
+  - @ilokesto/store@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
