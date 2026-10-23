@@ -1,0 +1,44 @@
+---
+title: "Toast"
+description: "Provider-scoped React notifications with a familiar facade and polished default renderer."
+---
+
+# Toast
+
+`@ilokesto/toast` is a ready-to-use notification system for React. It provides a familiar `toast.*` facade, auto-dismiss and pause behavior, promise state transitions, accessible defaults, configurable positions, custom rendering, and optional top-layer display.
+
+<PackageDemo name="toast" lang="en" />
+
+## Install
+
+```package-install
+@ilokesto/toast react react-dom
+```
+
+## Shortest useful example
+
+```tsx lineNumbers
+import { Toaster, toast } from '@ilokesto/toast';
+
+export function App() {
+  return (
+    <>
+      <button onClick={() => toast.success('Saved')}>Save</button>
+      <Toaster position="top-right" />
+    </>
+  );
+}
+```
+
+Mount the matching `Toaster` before a `toast.*` call runs. The default runtime is registered by `<Toaster />` after mount.
+
+## Toast or Overlay?
+
+Choose `@ilokesto/toast` for transient notifications. It already owns duration timers, pause-on-hover, status icons, live-region attributes, positions, limits, promise updates, and exit delay. Choose [`@ilokesto/overlay`](/en/overlay) only to create a different overlay family or a fully custom lifecycle. For blocking decisions, choose [`@ilokesto/modal`](/en/modal).
+
+## What to read next
+
+- [Quick start](/en/toast/quick-start) mounts a toaster and covers success and promise notifications.
+- [Core concepts](/en/toast/core-concepts) explains runtimes, ids, timers, and visibility.
+- [Practical guide](/en/toast/practical-guide) covers styling, multiple toasters, custom rows, and top-layer mode.
+- [API reference](/en/toast/api-reference) lists the exact public surface and defaults.

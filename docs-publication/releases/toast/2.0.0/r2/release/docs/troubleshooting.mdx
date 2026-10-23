@@ -1,0 +1,38 @@
+---
+title: "Troubleshooting"
+description: "Fix missing runtimes, invisible positions, stuck loading states, custom accessibility, and stacking issues."
+---
+
+# Troubleshooting
+
+## `No toaster runtime registered` is thrown
+
+Mount a `<Toaster>` with the same `toasterId` before the call runs. Do not call `toast.*` during module evaluation or during the render that first creates the toaster; call it from an event or post-mount effect.
+
+## The call succeeds but no row appears
+
+Check `toasterId` and position. A runtime renders only items matching its active position (`toastOptions.position` or `position`) and only up to `limit`. A toast created with a different per-call position remains in the raw store but is not visible in that stack.
+
+## A loading toast never closes
+
+Loading duration is `Infinity`. Use `toast.promise`, update the same id with success/error, or call `toast.dismiss(id)` / `toast.remove(id)`.
+
+## Dismiss looks slower than expected
+
+`dismiss` starts exit motion and waits for `removeDelay` (1000 ms by default) before hard removal. Use a shorter `removeDelay` or `remove` for immediate cleanup.
+
+## Custom content is not announced
+
+`toast.custom` rendered by `ToastBar` receives polite status defaults. When you replace the complete row through `Toaster` children, your renderer owns `role`, `aria-live`, and `aria-atomic`.
+
+## Notifications are behind application UI
+
+The inline container uses fixed positioning and z-index 9999, but transformed ancestors or stronger stacking contexts can still interfere. Mount the toaster higher in the tree or use `transport="top-layer"`; unsupported browsers fall back inline.
+
+## Two toaster stacks interfere
+
+Give each one a unique `toasterId` and send each call to that id. Mounting two toasters with the same id causes the latest registration to replace the earlier registry entry.
+
+## `useToaster` throws
+
+It reads context created inside `Toaster`, so it must run in a descendant custom renderer, not beside or above the toaster. For lower-level integrations, create a runtime and use `useToastItems(runtime)` explicitly.

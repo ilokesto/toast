@@ -1,0 +1,733 @@
+{
+  "schemaVersion": 2,
+  "package": {
+    "name": "@ilokesto/toast",
+    "version": "2.0.0",
+    "channel": "latest",
+    "revision": 2,
+    "releaseCommit": "ecd9709b76d1976ec86865314e85b916f220c818",
+    "docsCommit": "e0e50ec2ec4f4d487b6c9f35ea9ee2f243684c5c",
+    "snapshot": "docs-publication/releases/toast/2.0.0/r2"
+  },
+  "releaseSource": {
+    "commit": "ecd9709b76d1976ec86865314e85b916f220c818",
+    "packageTree": "5ddf0f2357c027fb14ded8260be2c988af28bde2",
+    "docsTree": "c3ff43ba360db7db09b41da194b3cc230470b16f",
+    "files": [
+      {
+        "path": "packages/toast/README.ko.md",
+        "mode": "100644",
+        "blob": "230a2bfad1021eedff438f342a67c79bb53eb06e"
+      },
+      {
+        "path": "packages/toast/README.md",
+        "mode": "100644",
+        "blob": "6d4a67e70009caa50904e265f67ae4536dfeb6cb"
+      },
+      {
+        "path": "packages/toast/docs/api-reference.ko.mdx",
+        "mode": "100644",
+        "blob": "31deac9442ecfa631464e57771b7a7cd555bf3fd"
+      },
+      {
+        "path": "packages/toast/docs/api-reference.mdx",
+        "mode": "100644",
+        "blob": "884a1ea2e1cf1ce961e2ec6a13826ac5ef66b106"
+      },
+      {
+        "path": "packages/toast/docs/core-concepts.ko.mdx",
+        "mode": "100644",
+        "blob": "9cdc941678d1a837db8b4b8004d353897bb9205f"
+      },
+      {
+        "path": "packages/toast/docs/core-concepts.mdx",
+        "mode": "100644",
+        "blob": "6802be94dcd53a4e423ef878227042bf0246ba1b"
+      },
+      {
+        "path": "packages/toast/docs/index.ko.mdx",
+        "mode": "100644",
+        "blob": "58287477663aeb777af43202b001b4960576cde9"
+      },
+      {
+        "path": "packages/toast/docs/index.mdx",
+        "mode": "100644",
+        "blob": "1567b1e35619ac1327195748bc4c085a7590b135"
+      },
+      {
+        "path": "packages/toast/docs/meta.json",
+        "mode": "100644",
+        "blob": "43229858c00b55ceaabd5586c5c4b3d469196846"
+      },
+      {
+        "path": "packages/toast/docs/practical-guide.ko.mdx",
+        "mode": "100644",
+        "blob": "f301726a0b89aa4860bdefd284864f8410fbec2b"
+      },
+      {
+        "path": "packages/toast/docs/practical-guide.mdx",
+        "mode": "100644",
+        "blob": "b0026fa514281223721d51c13e2053e3a05d8f4d"
+      },
+      {
+        "path": "packages/toast/docs/quick-start.ko.mdx",
+        "mode": "100644",
+        "blob": "d37a44ab2690443069cab52c9e692f5b979e7144"
+      },
+      {
+        "path": "packages/toast/docs/quick-start.mdx",
+        "mode": "100644",
+        "blob": "70a659a71838eced827e7e7720ccb0d4b47e8e83"
+      },
+      {
+        "path": "packages/toast/docs/troubleshooting.ko.mdx",
+        "mode": "100644",
+        "blob": "33acad9094f5b6fd8bd275ea438048cea09df637"
+      },
+      {
+        "path": "packages/toast/docs/troubleshooting.mdx",
+        "mode": "100644",
+        "blob": "566db9779aa211903cea28bd2036ae61c2807d41"
+      }
+    ]
+  },
+  "docsRevision": {
+    "commit": "e0e50ec2ec4f4d487b6c9f35ea9ee2f243684c5c",
+    "packageTree": "5ddf0f2357c027fb14ded8260be2c988af28bde2",
+    "docsTree": "c3ff43ba360db7db09b41da194b3cc230470b16f",
+    "files": [
+      {
+        "path": "packages/toast/README.ko.md",
+        "mode": "100644",
+        "blob": "230a2bfad1021eedff438f342a67c79bb53eb06e"
+      },
+      {
+        "path": "packages/toast/README.md",
+        "mode": "100644",
+        "blob": "6d4a67e70009caa50904e265f67ae4536dfeb6cb"
+      },
+      {
+        "path": "packages/toast/docs/api-reference.ko.mdx",
+        "mode": "100644",
+        "blob": "31deac9442ecfa631464e57771b7a7cd555bf3fd"
+      },
+      {
+        "path": "packages/toast/docs/api-reference.mdx",
+        "mode": "100644",
+        "blob": "884a1ea2e1cf1ce961e2ec6a13826ac5ef66b106"
+      },
+      {
+        "path": "packages/toast/docs/core-concepts.ko.mdx",
+        "mode": "100644",
+        "blob": "9cdc941678d1a837db8b4b8004d353897bb9205f"
+      },
+      {
+        "path": "packages/toast/docs/core-concepts.mdx",
+        "mode": "100644",
+        "blob": "6802be94dcd53a4e423ef878227042bf0246ba1b"
+      },
+      {
+        "path": "packages/toast/docs/index.ko.mdx",
+        "mode": "100644",
+        "blob": "58287477663aeb777af43202b001b4960576cde9"
+      },
+      {
+        "path": "packages/toast/docs/index.mdx",
+        "mode": "100644",
+        "blob": "1567b1e35619ac1327195748bc4c085a7590b135"
+      },
+      {
+        "path": "packages/toast/docs/meta.json",
+        "mode": "100644",
+        "blob": "43229858c00b55ceaabd5586c5c4b3d469196846"
+      },
+      {
+        "path": "packages/toast/docs/practical-guide.ko.mdx",
+        "mode": "100644",
+        "blob": "f301726a0b89aa4860bdefd284864f8410fbec2b"
+      },
+      {
+        "path": "packages/toast/docs/practical-guide.mdx",
+        "mode": "100644",
+        "blob": "b0026fa514281223721d51c13e2053e3a05d8f4d"
+      },
+      {
+        "path": "packages/toast/docs/quick-start.ko.mdx",
+        "mode": "100644",
+        "blob": "d37a44ab2690443069cab52c9e692f5b979e7144"
+      },
+      {
+        "path": "packages/toast/docs/quick-start.mdx",
+        "mode": "100644",
+        "blob": "70a659a71838eced827e7e7720ccb0d4b47e8e83"
+      },
+      {
+        "path": "packages/toast/docs/troubleshooting.ko.mdx",
+        "mode": "100644",
+        "blob": "33acad9094f5b6fd8bd275ea438048cea09df637"
+      },
+      {
+        "path": "packages/toast/docs/troubleshooting.mdx",
+        "mode": "100644",
+        "blob": "566db9779aa211903cea28bd2036ae61c2807d41"
+      }
+    ]
+  },
+  "runtimeSource": {
+    "commit": "ecd9709b76d1976ec86865314e85b916f220c818",
+    "files": [
+      {
+        "path": "packages/toast/.gitignore",
+        "bytes": 414,
+        "sha256": "3c25d908d0d6a08b09f000d27a54b82b69058f9e1be79a37db8015a74c775b7b",
+        "blob": "76c12d6f6232f163fd6aa963813956029c384c71",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/.npmignore",
+        "bytes": 80,
+        "sha256": "430499d8f5fcb55dfcab31d3959e78582e8b3c72a2d447f600154eb6fa97f59e",
+        "blob": "39bf94bb28eefd711e1cc213965430dff9d39c3c",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/.prettierrc",
+        "bytes": 126,
+        "sha256": "7e6cedbc6729b76baaa11139e6a19955da86fe62af3fc061549c01f07db0c1e2",
+        "blob": "8784f6950cfd30297215e2b3b0a52785119b80f9",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/AGENTS.md",
+        "bytes": 907,
+        "sha256": "150529d132f2825d40964422c7e3516f1b8dad6601356f3eb2761366095b5600",
+        "blob": "a9f5870974c8d5b44f80028ec1abe60b1dd99eaa",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/CHANGELOG.md",
+        "bytes": 2549,
+        "sha256": "ee1bf67ae766668685e5df71628bf0c86c535449e58aaf1fe73ffcc03690a750",
+        "blob": "4bdfe4067f22530939e0c8dfbf0d33634fa01e16",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/MIGRATION_FROM_REACT_HOT_TOAST.ko.md",
+        "bytes": 5727,
+        "sha256": "a66d44970841f768adb039ec57376cdc140e0232278bbbc81d08b87448bbe6fc",
+        "blob": "d97995d49bc6c86276b315cfd987262f5ea49f68",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/MIGRATION_FROM_REACT_HOT_TOAST.md",
+        "bytes": 5230,
+        "sha256": "4305789af270075ae6cf4c2cf0c08c57b501d7ba9073dddd88ebb91bed5fa6f3",
+        "blob": "ee230f9c9ff8be5303fdc498fa4834b2fc963bbe",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/package.json",
+        "bytes": 1408,
+        "sha256": "ca379ebe48249f03324251575b52f13a8a206866b831ba40bf5604b4c3cb2086",
+        "blob": "6063819db79d590256330e97618897fc841de141",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/components/ToastBar.tsx",
+        "bytes": 2600,
+        "sha256": "1dc2450a0567b9e5c052aa3dcc039975800d61273d0f6011790ef46d66aa9c45",
+        "blob": "7bb72a8f2aaf77dce551210cdb15f968db4f96de",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/components/ToastProvider.tsx",
+        "bytes": 746,
+        "sha256": "baf494ee05824562aae699d939f4da8bc228ad19e1f39e235b5dea11f598a500",
+        "blob": "30847cf7abeee88bbf0513b71ad8fdafa84be805",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/components/Toaster.tsx",
+        "bytes": 8398,
+        "sha256": "4a461ced46f1b57f553c31b1e044e457f8489cfa585cf72567d00f29924e0195",
+        "blob": "acb59b3339f730b304e6e4695569e4f8aedf13a5",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/components/icons.tsx",
+        "bytes": 3396,
+        "sha256": "ba59ea96cdc1e7e9c45a5b90e186749633d360d2eb5470e16b6b3b7fba49826b",
+        "blob": "983c98521389d4e83f27bdf780f1dd95cf92bccf",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/core/createToastRuntime.ts",
+        "bytes": 9321,
+        "sha256": "19416df9abf54154662e91d99be3dfc2792ff53c51f6be0ec956f5a2b4bd628c",
+        "blob": "a76803bfe3da4f702ec03094f089306507fe413c",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/core/createToastStore.ts",
+        "bytes": 3331,
+        "sha256": "b1989b61306297722d1cb0625b256add32d09d73cff98030ce89eee263c5c895",
+        "blob": "9c8105298fd92fb8252a1319fbb8e00c46239758",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/core/registry.ts",
+        "bytes": 795,
+        "sha256": "43a6e36d9cff810b0c30ef1a2aadda0eee3c0b77e17266ddef2a5d068b26736f",
+        "blob": "67355d313a91f18161b030f0cb101bfd55d684e3",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/core/toast.ts",
+        "bytes": 2157,
+        "sha256": "d5d4665e3ce82e09a1727cea2d7a191e2757aec112ce6dd3d27fa72f9849133d",
+        "blob": "88a87d614f173f66bfd7539519bd8787a2badc5b",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/core/utils.ts",
+        "bytes": 1465,
+        "sha256": "d46793f499da375fe9c772198d14dc0ab3c59d7efc0c3c1ac0b8066bbea3831b",
+        "blob": "91a015969083de513a8aefe5847417dab0f91eef",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/hooks/useToastItems.ts",
+        "bytes": 315,
+        "sha256": "beab8bb66f76850cb03055ddf681636224e15fbf8f218ac2bcf60d8bafb79f96",
+        "blob": "d35247f7ba0fdf2f9ea0e2364126a97d87125aec",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/hooks/useToaster.ts",
+        "bytes": 1416,
+        "sha256": "302a1e9ec5485cc4f3ff76bfd1e1fcb137cb8a40e1ac29a50841d397e1a3ef39",
+        "blob": "98e4285a2eeb5b01a164fd6ccb41a1694f871166",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/index.ts",
+        "bytes": 762,
+        "sha256": "ee22003d7043d5c1b399e31f4f84b6265ad243868bab0d8f46fbd6e2662117cb",
+        "blob": "3ed20560015c7af9889d45eb46d4dbf46c0d38d7",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/src/types/toast.ts",
+        "bytes": 5139,
+        "sha256": "7aa349b54a94f7cf383ee9e63f12d4b316058ce534ec81be5d70d2f742dc244d",
+        "blob": "56a8fc50bed43f3a422e1447bf1ea9aaebc97e52",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/test/Toaster.top-layer-position.test.tsx",
+        "bytes": 3651,
+        "sha256": "faee83b1d550d5c3ea8ed1a761f5a24cbe4654ab0098e89378550c613b461f8d",
+        "blob": "5062b01b9a276bb2999f4cbfad6cd07ec15d6c2b",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/test/Toaster.view-config.test.tsx",
+        "bytes": 4743,
+        "sha256": "5980fd2c23b9beeffdb2ea3cd0ba95e3bbd1c8a8b99f583624ac32aa285e1395",
+        "blob": "c8ef77d884c4c70744edf9df8c52e3e425b3176c",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/test/createToastRuntime.test.ts",
+        "bytes": 8125,
+        "sha256": "147c8e1b1569f72c45d64d839ccfa51c8b75ab3227c4150f130b20c1edf5b6c1",
+        "blob": "407c04e2a19895f1df41d09536c05a69268ac49d",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/test/createToastRuntime.view-config.test.ts",
+        "bytes": 4040,
+        "sha256": "9be8ad6f4ae13b62a2c2ef5f052f6b851578ee73f521c7a3c59038d7fa0fe29a",
+        "blob": "6fd40a23cc86614a4947d8a184890f2253f650d8",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/test/createToastStore.test.ts",
+        "bytes": 6287,
+        "sha256": "72dbe88dc6417494c5ffaf19f5d7c8607307e2bd9b087cbf2f950e8445cd3de4",
+        "blob": "3aac80cd9d262c52f5558c2dc07859b1b5959233",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/test/setup.ts",
+        "bytes": 42,
+        "sha256": "dd96e740066fddaa65ac991498bc5c975614a4ba07f4f71b1253707521fbde7c",
+        "blob": "9a4142590917437d23ee016163a1b23b9926eb36",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/tsconfig.json",
+        "bytes": 475,
+        "sha256": "a6c074fd1e3424aec75ac6d15e639e138a3bc1551960f7c240c1d262ce106284",
+        "blob": "296ac65048b0c1e01c53791db1af4dd07caa7671",
+        "mode": "100644"
+      },
+      {
+        "path": "packages/toast/vitest.config.ts",
+        "bytes": 177,
+        "sha256": "4c0b6aa0dd920415a751792513eb05740a60ec5acd4e2064409a63bec8726374",
+        "blob": "a22011fee72f443c428448814a6fe332d74cd51f",
+        "mode": "100644"
+      }
+    ]
+  },
+  "exampleSource": {
+    "commit": "e0e50ec2ec4f4d487b6c9f35ea9ee2f243684c5c",
+    "files": [
+      {
+        "path": "apps/docs/components/demos/toast-demo.tsx",
+        "mode": "100644",
+        "blob": "efeb205c7f9e20567409fa1387352ee131e15153"
+      }
+    ]
+  },
+  "registry": {
+    "tarball": "https://registry.npmjs.org/@ilokesto/toast/-/toast-2.0.0.tgz",
+    "integrity": "sha512-n9nRqwC97SN/8ruE5mguRiT5EWg+Qi57zEAvx7tbkPoyhP9FbRAVDAJKq2+kOUrWTn2WpAei6zMMCxV20c9G9g==",
+    "shasum": "a96bf7b4437a1c8d8923b4f2a24a935e4fef858d",
+    "gitHead": null,
+    "attestations": null,
+    "files": [
+      {
+        "path": "README.ko.md",
+        "bytes": 5435,
+        "sha256": "1f8dbfe8eabd80ddca8610b93bbb9bf75ba7a343f2d13ba9ad4d3ffaea687ca7"
+      },
+      {
+        "path": "README.md",
+        "bytes": 5264,
+        "sha256": "9e16ee9fed75173df3a2cf8e6eade54f53fbaae8b08bbdc297459d3d99c0f19b"
+      },
+      {
+        "path": "dist/components/ToastBar.d.ts",
+        "bytes": 495,
+        "sha256": "19d8254ee39dd87d1b7be445f6bb4ea643c5563bd7353a8000e910da5e585eb0"
+      },
+      {
+        "path": "dist/components/ToastBar.js",
+        "bytes": 2265,
+        "sha256": "fc6d24484b697b9d846d621479e8302e343e49d4774eb4895acc51e4382f77ec"
+      },
+      {
+        "path": "dist/components/ToastProvider.d.ts",
+        "bytes": 235,
+        "sha256": "83708e706b662d8854b7673a2d53027fd7139425fe7f84c7290676db1b3db3a6"
+      },
+      {
+        "path": "dist/components/ToastProvider.js",
+        "bytes": 655,
+        "sha256": "60e9b88d77ac125eef176d37a4f77e248624d32f2e984b6df90f4c3147a9b7ec"
+      },
+      {
+        "path": "dist/components/Toaster.d.ts",
+        "bytes": 265,
+        "sha256": "2d5ca42801283c3b668087957bdd0b398e10dd6d4f3a68f5bbb498823c75a47d"
+      },
+      {
+        "path": "dist/components/Toaster.js",
+        "bytes": 7926,
+        "sha256": "a12eac3bbed5b2ad2f9225d3a6411601c4f34564a35014b272aa24dcc75e2477"
+      },
+      {
+        "path": "dist/components/icons.d.ts",
+        "bytes": 563,
+        "sha256": "243a238c5909ee108ce2b9772cd96e6d468789c7f03c30c089928e0032b194c2"
+      },
+      {
+        "path": "dist/components/icons.js",
+        "bytes": 3624,
+        "sha256": "504d0423e59eb7ccda97eb848c78df39748501e753086d45ac96ea377d1a419f"
+      },
+      {
+        "path": "dist/core/createToastRuntime.d.ts",
+        "bytes": 149,
+        "sha256": "c527fe4cf301edb2eaaa8ee3bef5348f562267e91bbdbddf9677e521fd9a60d1"
+      },
+      {
+        "path": "dist/core/createToastRuntime.js",
+        "bytes": 9041,
+        "sha256": "8cafad28fe4a2313a3c97ef07a25a29dd923677834b2ae3ab7209c0d79bdf15f"
+      },
+      {
+        "path": "dist/core/createToastStore.d.ts",
+        "bytes": 112,
+        "sha256": "3cbc3046b68d228011ded65f3f6f7598f8ab365e9e1992313dbc8a486f8451f0"
+      },
+      {
+        "path": "dist/core/createToastStore.js",
+        "bytes": 3607,
+        "sha256": "bac214a1d26cb1d7cb9e5765e5a317d06d39b1bb31d1815d6b9d67cd031d5d73"
+      },
+      {
+        "path": "dist/core/registry.d.ts",
+        "bytes": 376,
+        "sha256": "4d7b0582b91a6220a48f5d8a652e0d2d40443049067298ea4e5fde599d78a42a"
+      },
+      {
+        "path": "dist/core/registry.js",
+        "bytes": 597,
+        "sha256": "426461e86f7513d5a8db6a1325374f23aa77f128149e8dc3e1bf4203046aa958"
+      },
+      {
+        "path": "dist/core/toast.d.ts",
+        "bytes": 92,
+        "sha256": "8776eef8191e90c0c31c9575d004d35f6619c20c9384c85b82b5f662e7f12ac6"
+      },
+      {
+        "path": "dist/core/toast.js",
+        "bytes": 1667,
+        "sha256": "d165f0f54d69d6c61c7cb5781fec65b66a3c19a3b4b2fa1ec6a6049240b84520"
+      },
+      {
+        "path": "dist/core/utils.d.ts",
+        "bytes": 726,
+        "sha256": "385c49f0ade860ec49587a9b621de88f59177aa3468dd23253e2435608773a2e"
+      },
+      {
+        "path": "dist/core/utils.js",
+        "bytes": 1161,
+        "sha256": "5c419555ace2e414ead347e63635437eb523c4f5a42a1ef14e83e1ad61ec1ec5"
+      },
+      {
+        "path": "dist/hooks/useToastItems.d.ts",
+        "bytes": 157,
+        "sha256": "c03dedcb68d9cc5ebc2df9ea64e6e1c66446d5037c02ea9293c3e2c29df8b019"
+      },
+      {
+        "path": "dist/hooks/useToastItems.js",
+        "bytes": 190,
+        "sha256": "fed659a67cefa24161ec87946aefefcd838f9b4f8960d0874104621ef5eb5361"
+      },
+      {
+        "path": "dist/hooks/useToaster.d.ts",
+        "bytes": 112,
+        "sha256": "0f5d1d60e9fe05a453b40936183d88516dfda3d2c2db97a9d93236afb5218ae7"
+      },
+      {
+        "path": "dist/hooks/useToaster.js",
+        "bytes": 1278,
+        "sha256": "0bb705e03cdf198af905d6076c4515976f79af9d699f3c694145b5b4fc63af6a"
+      },
+      {
+        "path": "dist/index.d.ts",
+        "bytes": 722,
+        "sha256": "7196902b491619a8946078a588a79c9afa5cfe48e59afb13de34f341f938f987"
+      },
+      {
+        "path": "dist/index.js",
+        "bytes": 352,
+        "sha256": "d52f38d1d539044e8c116edf94727ba65fa2dc4bdf5f62bd50f9327fea13eedb"
+      },
+      {
+        "path": "dist/types/toast.d.ts",
+        "bytes": 5300,
+        "sha256": "d1d06929e667d00b39f7938c4a496fa89c7282a7a879586e982188557aa008f6"
+      },
+      {
+        "path": "dist/types/toast.js",
+        "bytes": 11,
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+      },
+      {
+        "path": "package.json",
+        "bytes": 1387,
+        "sha256": "60298134ee9a2cd8476af98431e5170905f9f702bbcbb376b159f7517610008f"
+      }
+    ]
+  },
+  "provenance": {
+    "kind": "operational-evidence-not-cryptographic-source-provenance",
+    "report": "release-provenance.md",
+    "observedAt": "2026-09-27",
+    "publishRun": "https://github.com/ilokesto/ilokesto/actions/runs/36302267041",
+    "publishCheckout": "ecd9709b76d1976ec86865314e85b916f220c818",
+    "npmGitHead": null,
+    "npmAttestations": null,
+    "evidence": [
+      "The successful workflow checked out this commit; all eight annotated release tags peel to it.",
+      "Both shipped READMEs match source blobs; packed manifests differ only by workspace protocol rewrites.",
+      "The audit compared all published dist bytes with matching builds, including a fresh Fetcher build."
+    ],
+    "limitation": "npm exposes neither gitHead nor source provenance attestations for these versions. Workflow, tags, and byte comparisons support the source association but do not cryptographically prove it.",
+    "reportSha256": "374af7f4df1dd24d2e34aefb96656f779dbbbae0f6890cc817239b975fb29343",
+    "tag": "@ilokesto/toast@2.0.0",
+    "tagTarget": "ecd9709b76d1976ec86865314e85b916f220c818"
+  },
+  "files": [
+    {
+      "path": "examples/apps/docs/components/demos/toast-demo.tsx",
+      "bytes": 5190,
+      "sha256": "4aa96509b0d286df509e6e16415f836e4ab47575cf1f820fe6100c374de08488"
+    },
+    {
+      "path": "npm/package.tgz",
+      "bytes": 13187,
+      "sha256": "6ac0715150d2c8a738d08e7c8d3ea89712570cc9f70cf6bc636d7d32681e471a"
+    },
+    {
+      "path": "provenance/release-provenance.md",
+      "bytes": 21178,
+      "sha256": "374af7f4df1dd24d2e34aefb96656f779dbbbae0f6890cc817239b975fb29343"
+    },
+    {
+      "path": "release/README.ko.md",
+      "bytes": 5435,
+      "sha256": "1f8dbfe8eabd80ddca8610b93bbb9bf75ba7a343f2d13ba9ad4d3ffaea687ca7"
+    },
+    {
+      "path": "release/README.md",
+      "bytes": 5264,
+      "sha256": "9e16ee9fed75173df3a2cf8e6eade54f53fbaae8b08bbdc297459d3d99c0f19b"
+    },
+    {
+      "path": "release/docs/api-reference.ko.mdx",
+      "bytes": 3565,
+      "sha256": "e6d1c368e3308cdd565f89a2f2e3cb3c54aaba0c6abf2195c76d1bf0f00b9c65"
+    },
+    {
+      "path": "release/docs/api-reference.mdx",
+      "bytes": 2992,
+      "sha256": "fd22268d9ecad92ddcff7b5edc172c71b5e30c57473b969704b7d1186308aa9f"
+    },
+    {
+      "path": "release/docs/core-concepts.ko.mdx",
+      "bytes": 2266,
+      "sha256": "b1efb7d70520edb5fd48a0bf76e319f050a0fb9ca0e5cdd105e494e699c18eb2"
+    },
+    {
+      "path": "release/docs/core-concepts.mdx",
+      "bytes": 1754,
+      "sha256": "2886b257543d3b04aaafe4ef9b208dfb35c708fedb3c6186be6bddd89556cf8a"
+    },
+    {
+      "path": "release/docs/index.ko.mdx",
+      "bytes": 2096,
+      "sha256": "717515b0d2783b456ae6fe71f8c3780dfd31286bb08841df65e92e9df9754686"
+    },
+    {
+      "path": "release/docs/index.mdx",
+      "bytes": 1710,
+      "sha256": "9b6c004687590f346ac8e1ad67024d1a2f6c94541dc357ade14de140a4f46cfb"
+    },
+    {
+      "path": "release/docs/meta.json",
+      "bytes": 248,
+      "sha256": "3712d5772e5c0a349926e9b42b622dba23bc89d0b7ffbf7d39e40069beaf67a5"
+    },
+    {
+      "path": "release/docs/practical-guide.ko.mdx",
+      "bytes": 3105,
+      "sha256": "ee002f7b89945770db9e9d94fdff04c31d6685ece354f2383e5e6e1626511c2b"
+    },
+    {
+      "path": "release/docs/practical-guide.mdx",
+      "bytes": 2579,
+      "sha256": "608cd2318d3181d0fbbe38766efb66a4c6971e8eceb85947f26008c6315c4b55"
+    },
+    {
+      "path": "release/docs/quick-start.ko.mdx",
+      "bytes": 2684,
+      "sha256": "02335b9d9dd9583ffa0738c72df6777f6bb42e0cb2d7200e130a3c1feb32cb46"
+    },
+    {
+      "path": "release/docs/quick-start.mdx",
+      "bytes": 2278,
+      "sha256": "b77f3d8fa227746c24a3f5fcd57ac47e9446970cf1aed440587d06948cd95178"
+    },
+    {
+      "path": "release/docs/troubleshooting.ko.mdx",
+      "bytes": 2677,
+      "sha256": "6476c0c0b6e4a16d1bb053c3dfa3bf80b91c52680819ac3a71df5ac5c3c6e3ea"
+    },
+    {
+      "path": "release/docs/troubleshooting.mdx",
+      "bytes": 2089,
+      "sha256": "93d5e2b135d75204f2094e2c31e35eb5347143cbba541022e17c480b9ae523c7"
+    },
+    {
+      "path": "revision/README.ko.md",
+      "bytes": 5435,
+      "sha256": "1f8dbfe8eabd80ddca8610b93bbb9bf75ba7a343f2d13ba9ad4d3ffaea687ca7"
+    },
+    {
+      "path": "revision/README.md",
+      "bytes": 5264,
+      "sha256": "9e16ee9fed75173df3a2cf8e6eade54f53fbaae8b08bbdc297459d3d99c0f19b"
+    },
+    {
+      "path": "revision/docs/api-reference.ko.mdx",
+      "bytes": 3565,
+      "sha256": "e6d1c368e3308cdd565f89a2f2e3cb3c54aaba0c6abf2195c76d1bf0f00b9c65"
+    },
+    {
+      "path": "revision/docs/api-reference.mdx",
+      "bytes": 2992,
+      "sha256": "fd22268d9ecad92ddcff7b5edc172c71b5e30c57473b969704b7d1186308aa9f"
+    },
+    {
+      "path": "revision/docs/core-concepts.ko.mdx",
+      "bytes": 2266,
+      "sha256": "b1efb7d70520edb5fd48a0bf76e319f050a0fb9ca0e5cdd105e494e699c18eb2"
+    },
+    {
+      "path": "revision/docs/core-concepts.mdx",
+      "bytes": 1754,
+      "sha256": "2886b257543d3b04aaafe4ef9b208dfb35c708fedb3c6186be6bddd89556cf8a"
+    },
+    {
+      "path": "revision/docs/index.ko.mdx",
+      "bytes": 2096,
+      "sha256": "717515b0d2783b456ae6fe71f8c3780dfd31286bb08841df65e92e9df9754686"
+    },
+    {
+      "path": "revision/docs/index.mdx",
+      "bytes": 1710,
+      "sha256": "9b6c004687590f346ac8e1ad67024d1a2f6c94541dc357ade14de140a4f46cfb"
+    },
+    {
+      "path": "revision/docs/meta.json",
+      "bytes": 248,
+      "sha256": "3712d5772e5c0a349926e9b42b622dba23bc89d0b7ffbf7d39e40069beaf67a5"
+    },
+    {
+      "path": "revision/docs/practical-guide.ko.mdx",
+      "bytes": 3105,
+      "sha256": "ee002f7b89945770db9e9d94fdff04c31d6685ece354f2383e5e6e1626511c2b"
+    },
+    {
+      "path": "revision/docs/practical-guide.mdx",
+      "bytes": 2579,
+      "sha256": "608cd2318d3181d0fbbe38766efb66a4c6971e8eceb85947f26008c6315c4b55"
+    },
+    {
+      "path": "revision/docs/quick-start.ko.mdx",
+      "bytes": 2684,
+      "sha256": "02335b9d9dd9583ffa0738c72df6777f6bb42e0cb2d7200e130a3c1feb32cb46"
+    },
+    {
+      "path": "revision/docs/quick-start.mdx",
+      "bytes": 2278,
+      "sha256": "b77f3d8fa227746c24a3f5fcd57ac47e9446970cf1aed440587d06948cd95178"
+    },
+    {
+      "path": "revision/docs/troubleshooting.ko.mdx",
+      "bytes": 2677,
+      "sha256": "6476c0c0b6e4a16d1bb053c3dfa3bf80b91c52680819ac3a71df5ac5c3c6e3ea"
+    },
+    {
+      "path": "revision/docs/troubleshooting.mdx",
+      "bytes": 2089,
+      "sha256": "93d5e2b135d75204f2094e2c31e35eb5347143cbba541022e17c480b9ae523c7"
+    }
+  ]
+}

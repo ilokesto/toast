@@ -9,7 +9,7 @@ A React toast package built for practical `react-hot-toast` replacement quality.
 ## Documentation
 
 - Full docs: [English](https://ilokesto.ayden94.com/en/toast) · [한국어](https://ilokesto.ayden94.com/ko/toast)
-- Source: [packages/toast](https://github.com/ilokesto/ilokesto/tree/main/packages/toast)
+- Source: [ilokesto/toast](https://github.com/ilokesto/toast)
 - npm: [@ilokesto/toast](https://www.npmjs.com/package/@ilokesto/toast)
 
 ## Features
@@ -231,12 +231,22 @@ If you are moving from `react-hot-toast`, see [MIGRATION_FROM_REACT_HOT_TOAST.md
 
 ## Development
 
+Use Node 22 and pnpm 10.17.1.
+
 ```bash
-pnpm install
-pnpm run build
+pnpm install --frozen-lockfile
+pnpm build
+pnpm typecheck
+pnpm test
+pnpm test:tooling
+pnpm migrate:verify
+pnpm docs:publication:verify
+pnpm docs:typecheck
+pnpm docs:build
+pnpm docs:test
 ```
 
-Build outputs are generated in the `dist` directory.
+Build outputs are generated in the `dist` directory. Documentation is served locally with `pnpm docs:start`. `@ilokesto/overlay` and `@ilokesto/store` are regular registry dependencies of this standalone repository.
 
 ## License
 

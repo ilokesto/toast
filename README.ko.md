@@ -9,7 +9,7 @@
 ## 문서
 
 - 전체 문서: [English](https://ilokesto.ayden94.com/en/toast) · [한국어](https://ilokesto.ayden94.com/ko/toast)
-- 소스: [packages/toast](https://github.com/ilokesto/ilokesto/tree/main/packages/toast)
+- 소스: [ilokesto/toast](https://github.com/ilokesto/toast)
 - npm: [@ilokesto/toast](https://www.npmjs.com/package/@ilokesto/toast)
 
 ## Features
@@ -231,12 +231,22 @@ Toaster는 이 snapshot을 읽고 transport·측정·CSS의 브라우저 세부 
 
 ## Development
 
+Node 22와 pnpm 10.17.1을 사용하세요.
+
 ```bash
-pnpm install
-pnpm run build
+pnpm install --frozen-lockfile
+pnpm build
+pnpm typecheck
+pnpm test
+pnpm test:tooling
+pnpm migrate:verify
+pnpm docs:publication:verify
+pnpm docs:typecheck
+pnpm docs:build
+pnpm docs:test
 ```
 
-빌드 결과물은 `dist` 디렉터리에 생성됩니다.
+빌드 결과물은 `dist` 디렉터리에 생성됩니다. 문서는 `pnpm docs:start`로 로컬에서 확인할 수 있습니다. `@ilokesto/overlay`와 `@ilokesto/store`는 이 독립 저장소의 일반 레지스트리 의존성입니다.
 
 ## License
 

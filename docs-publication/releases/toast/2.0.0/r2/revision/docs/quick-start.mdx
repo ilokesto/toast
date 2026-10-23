@@ -1,0 +1,64 @@
+---
+title: "Quick start"
+description: "Install Toast, mount its runtime, and show success and promise notifications."
+---
+
+# Quick start
+
+Mount one toaster and trigger notifications from event handlers.
+
+## 1. Install
+
+`react` and `react-dom` are peer dependencies. React 18 and 19 are supported.
+
+```package-install
+@ilokesto/toast react react-dom
+```
+
+No stylesheet import is required. `Toaster` renders its motion keyframes and default card UI.
+
+## 2. Add a complete application
+
+```tsx lineNumbers
+import { Toaster, toast } from '@ilokesto/toast';
+
+async function saveProfile() {
+  return { name: 'Ada' };
+}
+
+export default function App() {
+  async function save() {
+    try {
+      await toast.promise(saveProfile(), {
+        loading: 'Saving profile...',
+        success: 'Profile saved',
+        error: (error) => `Could not save: ${String(error)}`,
+      });
+    } catch (error) {
+      // The toast reports the failure to the user; record it for debugging too.
+      console.error('Profile save failed', error);
+    }
+  }
+
+  return (
+    <>
+      <button onClick={() => toast.success('Copied')}>Copy</button>
+      <button onClick={() => void save()}>Save profile</button>
+      <Toaster position="top-right" />
+    </>
+  );
+}
+```
+
+## 3. Run and verify
+
+Start the React application. **Copy** shows a success notification and removes it after its default duration. **Save profile** first shows an indefinite loading toast, then updates the same id to success or error. Hover over the notification region to pause finite timers.
+
+This example resolves a local demo value, so it needs no backend and the loading
+state may be too brief to see. In your application, replace `saveProfile` with
+your asynchronous save operation. To try the error notification, replace its
+return statement with `throw new Error('Demo failure')`.
+
+`toast.*` uses a runtime registry. A call made before the matching `Toaster` effect has registered its runtime throws instead of silently dropping the notification. Keep `<Toaster />` mounted near the application root and trigger calls from events or effects after mount.
+
+Next, read [Core concepts](/en/toast/core-concepts) for lifecycle and timer behavior or [Practical guide](/en/toast/practical-guide) for multiple toasters and custom rows.

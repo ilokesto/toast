@@ -1,0 +1,53 @@
+---
+title: "API 레퍼런스"
+description: "Toast facade, component prop, hook, runtime method, 기본값, type을 정확히 설명합니다."
+---
+
+# API 레퍼런스
+
+모든 공개 API는 `@ilokesto/toast`에서 내보냅니다.
+
+## `toast`
+
+`toast(message, options?)`, `.success`, `.error`, `.loading`, `.custom`은 `ToastId` 문자열을 반환합니다. `.promise(promiseOrFactory, messages, options?)`는 `Promise<TData>`를 반환하고 하나의 알림을 로딩 상태에서 성공 또는 오류 상태로 갱신하며, Promise가 거부되면 오류를 다시 던집니다.
+
+`toast.dismiss(id?, toasterId?)`는 런타임에 있는 항목 하나 또는 전체의 닫기 단계를 시작합니다. `toast.remove(id?, toasterId?)`는 즉시 제거합니다. `toasterId`를 생략하면 두 메서드 모두 기본 런타임을 사용합니다.
+
+## `Toaster`
+
+| 속성 | 타입 | 기본값 |
+|---|---|---|
+| `toasterId` | `string` | `'default'` |
+| `position` | `ToastPosition` | `'top-right'` |
+| `transport` | `'inline' \| 'top-layer'` | `'inline'` |
+| `limit` | `number` | `20` |
+| `reverseOrder` | `boolean` | `false` |
+| `gutter` | `number` | `8` |
+| `containerStyle`, `containerClassName` | 컨테이너 스타일 | 없음 |
+| `toastOptions` | `DefaultToastOptions` | 없음 |
+| `children` | `(item, helpers) => ReactNode` | 기본 `ToastBar` |
+
+활성 스택의 위치에는 `toastOptions.position`이 `position`보다 우선 적용됩니다. `limit`은 0 이상으로 제한됩니다. `children`에 전달되는 도우미는 `{ dismiss, remove }`입니다.
+
+## `ToastOptions`
+
+`id`, `toasterId`, `duration`, `position`, `ariaProps`, `style`, `className`, `icon`, `iconTheme`, `removeDelay`입니다. 위치는 `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center`, `bottom-right`입니다.
+
+기본 표시 시간은 일반 알림 4000ms, 성공 알림 2000ms, 오류 알림 4000ms, 로딩 알림 `Infinity`, 사용자 지정 알림 4000ms입니다. 기본 `removeDelay`는 1000ms입니다.
+
+기본 접근성 설정에서 오류 알림은 `{ role: 'alert', 'aria-live': 'assertive', 'aria-atomic': true }`를 사용합니다. 나머지 타입은 각각 `status`, `polite`를 사용하며 `aria-atomic`은 true입니다.
+
+## 렌더링 API
+
+- `ToastBar({ toast, position?, style?, children? })`는 접근성을 갖춘 기본 애니메이션 카드를 렌더링합니다.
+- `ToastIcon({ type, icon, iconTheme })`은 사용자 지정 또는 기본 상태 아이콘을 렌더링합니다.
+- `useToaster()`는 `<Toaster>` 아래에서 실행해야 하며 `{ toasts, handlers }`를 반환합니다. 핸들러는 `updateHeight`, `startPause`, `endPause`, `calculateOffset`입니다.
+- `useToastItems(runtime)`은 명시적으로 지정한 `ToastRuntimeApi`를 구독하는 저수준 훅입니다.
+
+## `createToastRuntime(toasterId)`
+
+등록되지 않은 런타임을 만듭니다. 메서드는 `addToast`, `configureView`, `promiseToast`, `dismiss`, `closeAll`, `remove`, `clear`, `updateHeight`, `getRawSnapshot`, `startPause`, `endPause`, `subscribe`, `getSnapshot`, `getInitialSnapshot`입니다. 내부 등록 없이는 일반 퍼사드가 이 런타임을 찾을 수 없으므로 애플리케이션 UI에는 `Toaster`를 우선 사용하세요.
+
+## 공개 타입
+
+`Renderable`, ID, 타입/상태/위치/전송 방식 유니언, `ToastItem`, `ToastState`, `ToastOptions`, `DefaultToastOptions`, `IconTheme`, 스토어/퍼사드/런타임 계약, `ToasterProps`, `ToastBarProps`, `UseToasterResult`, `ToastRowHelpers`, `PromiseToastMessages`.

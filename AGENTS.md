@@ -1,26 +1,22 @@
 # @ilokesto/toast
 
-This directory contains the `@ilokesto/toast` package in the ilokesto pnpm monorepo.
+This repository owns one public library and its private local documentation workspace.
+Use Node 22 and pnpm 10.17.1. Run commands from this root.
 
-## What this package is
-
-A toast notification system on top of `@ilokesto/overlay`.
-
-## When modifying this package
-
-1. Read the root `AGENTS.md`, `PACKAGES.md`, and `ARCHITECTURE.md`.
-2. Load the `ilokesto-toast` skill from `.opencode/skills/ilokesto-toast/SKILL.md`.
-3. Build on `@ilokesto/overlay` for item lifecycle.
-4. Run `pnpm typecheck`, `pnpm test`, and `pnpm build` before committing.
-5. Add a changeset with `pnpm changeset` for any consumer-facing change.
-
-## Release flow
-
-1. Open a PR with a root changeset.
-2. After CI passes on `main`, the root workflow's release job opens a `ci: release` PR.
-3. Merge the release PR to publish to npm.
-
-## Must not do
-
-- Do not duplicate overlay item management here.
-- Avoid direct `@ilokesto/store` usage unless overlay does not expose needed APIs.
+- Keep the toast notification API, timers, queue and lifecycle behavior intact.
+- Library source and tests are in `src/` and `test/`; canonical bilingual MDX is in `docs/`.
+- The renderer is `website/`; immutable released inputs are in `docs-publication/`.
+- `@ilokesto/overlay` and `@ilokesto/store` are registry dependencies. Only this
+  library and private workspaces inside this repository may use workspace links.
+- Preserve the physical Overlay/Store identity: the toast runtime and any directly
+  imported overlay must resolve to one shared instance (`docs-publication/runtime` closure).
+- Preserve every historical receipt and archive byte. New captures use explicit schema 3.
+- Run `pnpm build`, `pnpm typecheck`, `pnpm test`, `pnpm test:tooling`,
+  `pnpm migrate:verify`, and the four docs quality commands in README.
+- Consumer-facing changes need a root Changeset; repository migration alone does not.
+- Preserve `.migration/source-manifest.json`, original archive refs and tag objects.
+  `migrate:verify` protects immutable history and present standalone safety without
+  fixing future HEAD, package version, or API to the migration checkpoint.
+- `release:verify --sha <full-SHA>` is read-only. Publishing is disabled by
+  `.release/policy.json`; never publish locally or deploy docs during migration.
+- Future publication remains token-based GitHub Actions with the latest dist-tag.

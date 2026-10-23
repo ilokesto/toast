@@ -1,0 +1,64 @@
+---
+title: "빠른 시작"
+description: "Toast를 설치하고 runtime을 마운트한 뒤 success 및 promise 알림을 표시합니다."
+---
+
+# 빠른 시작
+
+하나의 Toaster를 마운트하고 이벤트 핸들러에서 알림을 실행합니다.
+
+## 1. 설치
+
+`react`와 `react-dom`은 피어 의존성이며 React 18과 19를 지원합니다.
+
+```package-install
+@ilokesto/toast react react-dom
+```
+
+스타일시트를 가져올 필요가 없습니다. `Toaster`가 모션 키프레임과 기본 카드 UI를 렌더링합니다.
+
+## 2. 완전한 애플리케이션 추가
+
+```tsx lineNumbers
+import { Toaster, toast } from '@ilokesto/toast';
+
+async function saveProfile() {
+  return { name: 'Ada' };
+}
+
+export default function App() {
+  async function save() {
+    try {
+      await toast.promise(saveProfile(), {
+        loading: '프로필 저장 중...',
+        success: '프로필을 저장했습니다',
+        error: (error) => `저장할 수 없습니다: ${String(error)}`,
+      });
+    } catch (error) {
+      // 알림으로 실패를 안내하고 디버깅을 위해 오류도 기록합니다.
+      console.error('프로필 저장 실패', error);
+    }
+  }
+
+  return (
+    <>
+      <button onClick={() => toast.success('복사했습니다')}>복사</button>
+      <button onClick={() => void save()}>프로필 저장</button>
+      <Toaster position="top-right" />
+    </>
+  );
+}
+```
+
+## 3. 실행 및 확인
+
+React 애플리케이션을 시작하세요. **복사**를 누르면 성공 알림이 표시되고 기본 표시 시간이 지나면 제거됩니다. **프로필 저장**을 누르면 먼저 무기한 로딩 알림이 표시된 뒤 같은 ID의 알림이 성공 또는 오류 상태로 갱신됩니다. 알림 영역에 포인터를 올리면 유한 타이머가 일시 정지합니다.
+
+이 예제는 로컬 데모 값을 반환하므로 백엔드가 필요 없고, 로딩 상태는
+너무 짧아 보이지 않을 수 있습니다. 실제 앱에서는 `saveProfile`을 비동기
+저장 함수로 교체하세요. 오류 알림을 확인하려면 반환문 대신
+`throw new Error('데모 오류')`를 넣으세요.
+
+`toast.*`는 런타임 레지스트리를 사용합니다. 대응하는 `Toaster`의 이펙트가 런타임을 등록하기 전에 호출하면 알림을 조용히 버리는 대신 오류를 던집니다. `<Toaster />`는 애플리케이션 루트 근처에 유지하고, 마운트된 뒤 이벤트나 이펙트에서 호출하세요.
+
+이어서 라이프사이클과 타이머는 [핵심 개념](/ko/toast/core-concepts), 여러 Toaster와 사용자 지정 행은 [실전 가이드](/ko/toast/practical-guide)에서 확인하세요.

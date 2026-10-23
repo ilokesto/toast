@@ -1,0 +1,26 @@
+---
+title: "Mental model"
+description: "Understand toaster runtimes, facade routing, visibility, and dismiss versus remove."
+---
+
+# Mental model
+
+## A Toaster owns a runtime
+
+Each `Toaster` creates and registers a runtime under its `toasterId` (`"default"` by default). Calls such as `toast.success(message, { toasterId })` find that runtime. Different ids isolate their items, timers, positions, and configuration.
+
+## Add, update, dismiss, remove
+
+A facade call creates a visible item and returns its string id. Reusing an existing `id` updates that toast, resets its creation time and timer, and cancels pending removal. `toast.promise` uses this to turn one loading item into success or error and returns the original promise result (or rethrows its error).
+
+`toast.dismiss(id)` changes an item to `closing` and schedules removal after `removeDelay`. `toast.remove(id)` removes it immediately. Omitting `id` applies the operation to all items in the selected runtime.
+
+## Timers and visible items
+
+Finite durations count from creation, pause while the pointer is over the notification region, and resume with elapsed pause time excluded. Loading toasts use `Infinity`. The runtime retains raw items but exposes only items matching the configured active position, capped by `limit`.
+
+## Rendering and accessibility
+
+`Toaster` places the stack; `ToastBar` renders each default row. Blank, success, loading, and custom defaults announce politely with `role="status"`; errors use assertive `role="alert"`. Override `ariaProps` only when the urgency of your message differs.
+
+Choose this package when those notification policies fit. Use [`@ilokesto/overlay`](/en/overlay) for a new layer family, or [`@ilokesto/modal`](/en/modal) for blocking decisions.

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "roots": {
+    "toast": "@ilokesto/toast@2.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)",
+    "overlay": "@ilokesto/overlay@2.0.1(react@19.2.8)",
+    "store": "@ilokesto/store@2.0.1",
+    "react": "react@19.2.8",
+    "react-dom": "react-dom@19.2.8(react@19.2.8)"
+  },
+  "nodes": {
+    "@ilokesto/overlay@2.0.1(react@19.2.8)": {
+      "name": "@ilokesto/overlay",
+      "version": "2.0.1",
+      "integrity": "sha512-GX992XF81qThxtCGmExr+9bzViPAlKPhBp+w/4RmHOnM91Wh4M2yBRqERaRZdaVNZZbGDIgJ0EGiWNxemRnK6g==",
+      "dependencies": {
+        "@ilokesto/store": "@ilokesto/store@2.0.1",
+        "react": "react@19.2.8"
+      }
+    },
+    "@ilokesto/store@2.0.1": {
+      "name": "@ilokesto/store",
+      "version": "2.0.1",
+      "integrity": "sha512-tHmRp+QUR2297W4vhyQpQ3iLHw70INEuTVPdlsPbaurkNDqD81BYXEgb3Fsh6Vqcv0DH8v1QkBkUYfgUeR5ZBQ==",
+      "dependencies": {}
+    },
+    "@ilokesto/toast@2.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)": {
+      "name": "@ilokesto/toast",
+      "version": "2.0.0",
+      "integrity": "sha512-n9nRqwC97SN/8ruE5mguRiT5EWg+Qi57zEAvx7tbkPoyhP9FbRAVDAJKq2+kOUrWTn2WpAei6zMMCxV20c9G9g==",
+      "dependencies": {
+        "@ilokesto/overlay": "@ilokesto/overlay@2.0.1(react@19.2.8)",
+        "@ilokesto/store": "@ilokesto/store@2.0.1",
+        "react": "react@19.2.8",
+        "react-dom": "react-dom@19.2.8(react@19.2.8)"
+      }
+    },
+    "react-dom@19.2.8(react@19.2.8)": {
+      "name": "react-dom",
+      "version": "19.2.8",
+      "integrity": "sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==",
+      "dependencies": {
+        "react": "react@19.2.8",
+        "scheduler": "scheduler@0.27.0"
+      }
+    },
+    "react@19.2.8": {
+      "name": "react",
+      "version": "19.2.8",
+      "integrity": "sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==",
+      "dependencies": {}
+    },
+    "scheduler@0.27.0": {
+      "name": "scheduler",
+      "version": "0.27.0",
+      "integrity": "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==",
+      "dependencies": {}
+    }
+  }
+}
