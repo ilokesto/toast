@@ -145,6 +145,18 @@ test('release verification: wrong tag or artifact digest -> rejected after real 
   await assert.rejects(verifyRelease(fixture.options), /RELEASE_TAG_MISMATCH/);
 });
 
+test('packRelease: gzip OS byte normalized to 3 and persisted to the saved tarball', async t => {
+  const fixture = await releaseFixture(t);
+  const destination = await mkdtemp(path.join(os.tmpdir(), 'toast-gzip-os-'));
+  t.after(() => rm(destination, { recursive: true, force: true }));
+  const packed = await packRelease(fixture.root, destination);
+  assert.equal(packed.bytes.length > 0, true);
+  assert.equal(packed.bytes[9], 3, 'GZIP_OS_BYTE_NOT_NORMALIZED');
+  const saved = await readFile(path.join(destination, packed.file));
+  assert.deepEqual(saved, packed.bytes, 'RETURNED_BYTES_DIFFER_FROM_SAVED_TARBALL');
+  assert.equal(hash(saved), packed.packSha256, 'PACK_SHA_NOT_FROM_SAVED_BYTES');
+});
+
 test('CI dispatch: main, PR, moving head, and foreign repository -> exact gate semantics', async t => {
   const workflow = parse(await readFile(path.join(rootDir, '.github/workflows/ci.yml'), 'utf8'));
   assert.equal(workflow.on.workflow_dispatch.inputs.expected_head_sha.required, true);
