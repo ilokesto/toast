@@ -1,26 +1,14 @@
 # @ilokesto/toast
 
-**English** | [한국어](./README.ko.md)
+React notifications with a familiar `toast.*` API, a default UI, and custom rendering.
 
-A React toast package built for practical `react-hot-toast` replacement quality.
+[![npm version](https://img.shields.io/npm/v/%40ilokesto%2Ftoast?style=flat&color=555)](https://www.npmjs.com/package/@ilokesto/toast)
 
-`@ilokesto/toast` provides a provider-scoped toast runtime, a familiar `toast.*` facade, a polished default renderer, headless hooks, and an optional top-layer transport. Internally it uses `@ilokesto/overlay` for presence lifecycle only, while toast policy and rendering stay inside this package.
+[Docs](https://ilokesto.ayden94.com/en/toast) | [API](./docs/api-reference.mdx) | [한국어](./README.ko.md)
 
-## Documentation
-
-- Full docs: [English](https://ilokesto.ayden94.com/en/toast) · [한국어](https://ilokesto.ayden94.com/ko/toast)
-- Source: [ilokesto/toast](https://github.com/ilokesto/toast)
-- npm: [@ilokesto/toast](https://www.npmjs.com/package/@ilokesto/toast)
-
-## Features
-
-- Familiar facade: `toast()`, `toast.success()`, `toast.error()`, `toast.loading()`, `toast.custom()`, `toast.promise()`
-- Provider-scoped runtimes separated by `toasterId`
-- Default `Toaster` with built-in card UI, animated status icons, spinner, and enter/exit motion
-- Per-toast options such as `style`, `className`, `icon`, `iconTheme`, `removeDelay`, `position`, `duration`, and `ariaProps`
-- `toastOptions` merge order of global → per-type → per-toast options
-- Headless `useToaster()` for custom renderers
-- Optional `transport="top-layer"` mode powered by manual popover
+- Notification flows with `toast.success`, `toast.error`, `toast.loading`, and `toast.promise`.
+- Separate runtimes by unique `toasterId`, with configurable defaults and auto-dismiss.
+- Composable `ToastBar`, headless hooks, and optional top-layer transport.
 
 ## Installation
 
@@ -28,210 +16,52 @@ A React toast package built for practical `react-hot-toast` replacement quality.
 pnpm add @ilokesto/toast react react-dom
 ```
 
-or
+## Quick start
 
-```bash
-npm install @ilokesto/toast react react-dom
-```
-
-## Basic Usage
+Mount the matching `Toaster` before calling `toast.*`; trigger calls from an event handler.
 
 ```tsx
 import { Toaster, toast } from '@ilokesto/toast';
 
-function App() {
+function NotifyButton() {
+  function notify() {
+    toast.success('Saved successfully', {
+      toasterId: 'app',
+      duration: 3000,
+    });
+  }
+
+  return <button onClick={notify}>Show toast</button>;
+}
+
+export function App() {
   return (
     <>
-      <button onClick={() => toast.success('Saved successfully')}>Show toast</button>
-      <Toaster />
+      <NotifyButton />
+      <Toaster
+        toasterId="app"
+        position="top-right"
+        toastOptions={{ duration: 4000 }}
+      />
     </>
   );
 }
 ```
 
-## Promise Toasts
+Use a unique `toasterId` for each stack. `useToaster()` belongs in a descendant custom renderer under `Toaster`. Default rows provide status/alert live regions; replacing the whole row makes you responsible for its `role` and live-region accessibility.
 
-```tsx
-import { Toaster, toast } from '@ilokesto/toast';
+## Further reading
 
-async function savePost() {
-  return fetch('/api/posts', { method: 'POST' });
-}
+- [Runtime, timers, and visibility](./docs/core-concepts.mdx)
+- [Defaults, custom rows, and transports](./docs/practical-guide.mdx)
+- [Facade, components, and headless API](./docs/api-reference.mdx)
+- [Registration, position, and accessibility troubleshooting](./docs/troubleshooting.mdx)
+- [Migrate from react-hot-toast](./MIGRATION_FROM_REACT_HOT_TOAST.md)
 
-toast.promise(savePost(), {
-  loading: 'Saving post…',
-  success: 'Post saved',
-  error: (error) => `Save failed: ${String(error)}`,
-});
+<details>
+<summary>Development</summary>
 
-export function App() {
-  return <Toaster />;
-}
-```
-
-## Custom Rendering
-
-### `Toaster` children
-
-```tsx
-import { Toaster } from '@ilokesto/toast';
-
-export function App() {
-  return (
-    <Toaster>
-      {(toast, { dismiss }) => (
-        <button onClick={dismiss}>
-          {toast.message}
-        </button>
-      )}
-    </Toaster>
-  );
-}
-```
-
-### `ToastBar`
-
-```tsx
-import { ToastBar, Toaster } from '@ilokesto/toast';
-
-export function App() {
-  return (
-    <Toaster>
-      {(toast) => (
-        <ToastBar toast={toast}>
-          {({ icon, message }) => (
-            <>
-              {message}
-              {icon}
-            </>
-          )}
-        </ToastBar>
-      )}
-    </Toaster>
-  );
-}
-```
-
-## Top-Layer Transport
-
-`@ilokesto/toast` adds an extra rendering mode that `react-hot-toast` does not provide:
-
-```tsx
-<Toaster transport="top-layer" />
-```
-
-This uses manual popover when the browser supports it and falls back to inline rendering when it does not.
-
-## Headless Usage
-
-`useToaster()` exposes the visible toast list and runtime helpers:
-
-```ts
-const { toasts, handlers } = useToaster();
-```
-
-Available handlers:
-
-- `updateHeight`
-- `startPause`
-- `endPause`
-- `calculateOffset`
-
-This hook is intended for advanced integrations that run under the mounted `Toaster` context.
-
-## Source Layout
-
-```text
-src/
-  components/
-    ToastBar.tsx
-    ToastProvider.tsx
-    Toaster.tsx
-    ToastContainer.tsx
-    ToastMeasure.tsx
-    toasterStyles.ts
-    icons.tsx
-  core/
-    createToastRuntime.ts
-    createToastTimers.ts
-    resolveToastOptions.ts
-    createToastStore.ts
-    registry.ts
-    toast.ts
-    utils.ts
-  hooks/
-    useToaster.ts
-    useToastItems.ts
-  types/
-    toast.ts
-  index.ts
-```
-
-## Responsibilities
-
-### `src/components`
-
-- `Toaster.tsx` → mounts the visible toast stack, configures runtime view options, and provides the default container
-- `ToastContainer.tsx` → inline/native popover transports, positioning reset and browser fallback
-- `ToastMeasure.tsx` → row height measurement and ResizeObserver cleanup
-- `toasterStyles.ts` → unchanged animation CSS rendered by Toaster
-- `ToastBar.tsx` → composable default renderer primitive for a single toast row
-- `icons.tsx` → built-in spinner and status icon components used by the default renderer
-- `ToastProvider.tsx` → creates and registers provider-scoped runtimes by `toasterId`
-
-### `src/core`
-
-- `toast.ts` → the public `toast.*` facade
-- `createToastRuntime.ts` → command order, toast/overlay coordination, pause state, promise transitions and visible snapshot identity
-- `createToastTimers.ts` → dismiss/remove timeout ownership, remaining duration and cancellation
-- `resolveToastOptions.ts` → pure view-default/type-default/per-toast option merging
-- `createToastStore.ts` → raw toast state store
-- `registry.ts` → runtime registration by `toasterId`
-- `utils.ts` → default durations, ids, icon themes, and small helpers
-
-### `src/hooks`
-
-- `useToaster.ts` → headless hook returning `{ toasts, handlers }`
-- `useToastItems.ts` → subscribes to the current visible toast items
-
-### `src/types`
-
-- `toast.ts` → public contracts for runtime APIs, props, item state, and options
-
-### `src/index.ts`
-
-- re-exports the public runtime, renderer, hook, and type surface
-
-### Reading a toast operation
-
-Follow `toast.ts` into `createToastRuntime` for command order. Option resolution is
-a pure calculation; timers only invoke runtime commands and never mutate stores.
-Runtime continues to own the sequence between overlay presence and toast state.
-
-```text
-add/update -> resolve options -> ensure overlay presence -> write toast -> schedule dismiss
-dismiss -> cancel dismiss timer -> close overlay -> mark toast closing -> schedule remove
-remove -> cancel both timers -> remove overlay -> remove toast
-```
-
-Pause cancels dismissal, not closing removal. Resume schedules the remaining
-duration, including time spent paused. Reusing an ID cancels its old removal.
-The visible snapshot cache stays in the runtime to preserve subscription identity.
-Toaster reads that snapshot; transport, measurement and CSS modules keep browser
-details out of the row-rendering flow without adding wrapper DOM.
-
-## Exports
-
-- values → `toast`, `Toaster`, `ToastBar`, `ToastIcon`, `useToaster`, `useToastItems`, `createToastRuntime`
-- types → `ToastBarProps`, `ToastOptions`, `DefaultToastOptions`, `ToasterProps`, `UseToasterResult`, and related toast contracts
-
-## Migration
-
-If you are moving from `react-hot-toast`, see [MIGRATION_FROM_REACT_HOT_TOAST.md](./MIGRATION_FROM_REACT_HOT_TOAST.md).
-
-## Development
-
-Use Node 22 and pnpm 10.17.1.
+Use Node 22 and pnpm 10.17.1 from this repository root.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -246,8 +76,18 @@ pnpm docs:build
 pnpm docs:test
 ```
 
-Build outputs are generated in the `dist` directory. Documentation is served locally with `pnpm docs:start`. `@ilokesto/overlay` and `@ilokesto/store` are regular registry dependencies of this standalone repository.
+`dismiss()` starts closing and removes after `removeDelay`; `remove()` removes immediately. Loading duration is infinite: update the same id or dismiss explicitly.
 
-## License
+Pause stops dismissal, not removal of closing items. Resume accounts for paused time; reusing an id cancels its old removal.
 
-MIT
+Follow `toast.ts` → `createToastRuntime`. The runtime owns overlay presence, toast state, and subscription snapshot identity. Option merging is pure; timers only invoke runtime commands.
+
+`transport="top-layer"` uses manual popover and falls back to inline on unsupported browsers.
+
+Docs: `pnpm docs:start`. `docs/` holds bilingual originals; `website/` renders them.
+
+`@ilokesto/overlay` and `@ilokesto/store` are registry dependencies. Keep the runtime and any directly imported overlay on the same physical Overlay/Store instance.
+
+License: MIT.
+
+</details>

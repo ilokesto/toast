@@ -1,237 +1,67 @@
 # @ilokesto/toast
 
-[English](./README.md) | **한국어**
+익숙한 `toast.*` API, 기본 UI와 커스텀 렌더링을 제공하는 React 알림 패키지입니다.
 
-실사용 기준으로 `react-hot-toast`를 대체할 수 있도록 만든 React toast 패키지입니다.
+[![npm version](https://img.shields.io/npm/v/%40ilokesto%2Ftoast?style=flat&color=555)](https://www.npmjs.com/package/@ilokesto/toast)
 
-`@ilokesto/toast`는 provider-scoped toast runtime, 익숙한 `toast.*` facade, 기본 렌더러, headless hook, 그리고 선택적인 top-layer transport를 제공합니다. 내부적으로는 `@ilokesto/overlay`를 presence lifecycle 용도로만 사용하고, toast 정책과 렌더링은 이 패키지 안에서 처리합니다.
+[문서](https://ilokesto.ayden94.com/ko/toast) | [API](./docs/api-reference.ko.mdx) | [English](./README.md)
 
-## 문서
+- `toast.success`, `toast.error`, `toast.loading`, `toast.promise`로 알림 흐름을 만듭니다.
+- 고유한 `toasterId`로 runtime을 분리하고 옵션과 자동 닫기를 설정합니다.
+- `ToastBar`, headless hook과 선택적 top-layer transport를 제공합니다.
 
-- 전체 문서: [English](https://ilokesto.ayden94.com/en/toast) · [한국어](https://ilokesto.ayden94.com/ko/toast)
-- 소스: [ilokesto/toast](https://github.com/ilokesto/toast)
-- npm: [@ilokesto/toast](https://www.npmjs.com/package/@ilokesto/toast)
-
-## Features
-
-- 익숙한 facade: `toast()`, `toast.success()`, `toast.error()`, `toast.loading()`, `toast.custom()`, `toast.promise()`
-- `toasterId` 기준으로 분리되는 provider-scoped runtime
-- 기본 `Toaster`에 포함된 카드 UI, 상태 아이콘, spinner, enter/exit motion
-- `style`, `className`, `icon`, `iconTheme`, `removeDelay`, `position`, `duration`, `ariaProps` 같은 per-toast 옵션
-- global → per-type → per-toast 순서의 `toastOptions` merge
-- 커스텀 렌더러를 위한 headless `useToaster()`
-- manual popover 기반의 선택적 `transport="top-layer"`
-
-## Installation
+## 설치
 
 ```bash
 pnpm add @ilokesto/toast react react-dom
 ```
 
-또는
+## 빠른 시작
 
-```bash
-npm install @ilokesto/toast react react-dom
-```
-
-## Basic Usage
+`toast.*`를 호출하기 전에 해당 `Toaster`가 마운트되어 있어야 합니다. 이벤트 핸들러에서 호출하세요.
 
 ```tsx
 import { Toaster, toast } from '@ilokesto/toast';
 
-function App() {
+function NotifyButton() {
+  function notify() {
+    toast.success('Saved successfully', {
+      toasterId: 'app',
+      duration: 3000,
+    });
+  }
+
+  return <button onClick={notify}>Show toast</button>;
+}
+
+export function App() {
   return (
     <>
-      <button onClick={() => toast.success('Saved successfully')}>Show toast</button>
-      <Toaster />
+      <NotifyButton />
+      <Toaster
+        toasterId="app"
+        position="top-right"
+        toastOptions={{ duration: 4000 }}
+      />
     </>
   );
 }
 ```
 
-## Promise Toasts
+여러 stack에는 서로 다른 `toasterId`를 사용하세요. `useToaster()`는 `Toaster`의 하위 커스텀 렌더러에서만 사용합니다. 기본 행은 status/alert live region을 제공하지만, 행 전체를 교체하면 `role`과 live-region 접근성은 직접 책임져야 합니다.
 
-```tsx
-import { Toaster, toast } from '@ilokesto/toast';
+## 더 알아보기
 
-async function savePost() {
-  return fetch('/api/posts', { method: 'POST' });
-}
+- [Runtime, timer와 표시 모델](./docs/core-concepts.ko.mdx)
+- [기본 옵션, 커스텀 행과 transport](./docs/practical-guide.ko.mdx)
+- [Facade, 컴포넌트와 headless API](./docs/api-reference.ko.mdx)
+- [등록, 위치와 접근성 문제 해결](./docs/troubleshooting.ko.mdx)
+- [react-hot-toast에서 마이그레이션](./MIGRATION_FROM_REACT_HOT_TOAST.ko.md)
 
-toast.promise(savePost(), {
-  loading: 'Saving post…',
-  success: 'Post saved',
-  error: (error) => `Save failed: ${String(error)}`,
-});
+<details>
+<summary>개발</summary>
 
-export function App() {
-  return <Toaster />;
-}
-```
-
-## Custom Rendering
-
-### `Toaster` children
-
-```tsx
-import { Toaster } from '@ilokesto/toast';
-
-export function App() {
-  return (
-    <Toaster>
-      {(toast, { dismiss }) => (
-        <button onClick={dismiss}>
-          {toast.message}
-        </button>
-      )}
-    </Toaster>
-  );
-}
-```
-
-### `ToastBar`
-
-```tsx
-import { ToastBar, Toaster } from '@ilokesto/toast';
-
-export function App() {
-  return (
-    <Toaster>
-      {(toast) => (
-        <ToastBar toast={toast}>
-          {({ icon, message }) => (
-            <>
-              {message}
-              {icon}
-            </>
-          )}
-        </ToastBar>
-      )}
-    </Toaster>
-  );
-}
-```
-
-## Top-Layer Transport
-
-`@ilokesto/toast`는 `react-hot-toast`에 없는 추가 렌더링 모드를 제공합니다.
-
-```tsx
-<Toaster transport="top-layer" />
-```
-
-브라우저가 지원하면 manual popover를 사용하고, 지원하지 않으면 inline 렌더링으로 자동 fallback합니다.
-
-## Headless Usage
-
-`useToaster()`는 visible toast 목록과 runtime helper를 노출합니다.
-
-```ts
-const { toasts, handlers } = useToaster();
-```
-
-사용 가능한 handler:
-
-- `updateHeight`
-- `startPause`
-- `endPause`
-- `calculateOffset`
-
-이 hook은 mounted `Toaster` context 아래에서 동작하는 고급 통합 시나리오를 위한 API입니다.
-
-## Source Layout
-
-```text
-src/
-  components/
-    ToastBar.tsx
-    ToastProvider.tsx
-    Toaster.tsx
-    ToastContainer.tsx
-    ToastMeasure.tsx
-    toasterStyles.ts
-    icons.tsx
-  core/
-    createToastRuntime.ts
-    createToastTimers.ts
-    resolveToastOptions.ts
-    createToastStore.ts
-    registry.ts
-    toast.ts
-    utils.ts
-  hooks/
-    useToaster.ts
-    useToastItems.ts
-  types/
-    toast.ts
-  index.ts
-```
-
-## Responsibilities
-
-### `src/components`
-
-- `Toaster.tsx` → visible toast stack을 마운트하고 runtime view 옵션을 설정하며 기본 컨테이너를 제공합니다
-- `ToastContainer.tsx` → inline/native popover transport, 위치 초기화와 브라우저 fallback
-- `ToastMeasure.tsx` → 행 높이 측정과 ResizeObserver 정리
-- `toasterStyles.ts` → Toaster가 렌더링하는 기존 animation CSS
-- `ToastBar.tsx` → 개별 toast row를 위한 기본 렌더러 primitive입니다
-- `icons.tsx` → 기본 spinner와 상태 아이콘 컴포넌트를 제공합니다
-- `ToastProvider.tsx` → `toasterId`별 provider-scoped runtime을 만들고 등록합니다
-
-### `src/core`
-
-- `toast.ts` → public `toast.*` facade
-- `createToastRuntime.ts` → 명령 순서, toast/overlay 연결, pause 상태, promise 전환과 visible snapshot identity
-- `createToastTimers.ts` → dismiss/remove timeout 소유권, 잔여 시간과 취소
-- `resolveToastOptions.ts` → view 기본값, type 기본값, 개별 toast 옵션의 순수 병합
-- `createToastStore.ts` → raw toast state store
-- `registry.ts` → `toasterId` 기준 runtime 등록
-- `utils.ts` → 기본 duration, id, icon theme, helper 정의
-
-### `src/hooks`
-
-- `useToaster.ts` → `{ toasts, handlers }`를 반환하는 headless hook
-- `useToastItems.ts` → 현재 visible toast item 목록을 구독합니다
-
-### `src/types`
-
-- `toast.ts` → runtime API, props, item state, options에 대한 public contract
-
-### `src/index.ts`
-
-- public runtime, renderer, hook, type surface를 다시 export합니다
-
-### Toast 동작 읽는 순서
-
-명령 순서는 `toast.ts`에서 `createToastRuntime`으로 따라가면 됩니다. 옵션은 순수
-계산으로 결정하고 timer는 runtime 명령을 호출할 뿐 store를 직접 바꾸지 않습니다.
-Overlay presence와 toast 상태 사이의 처리 순서는 runtime이 계속 소유합니다.
-
-```text
-add/update -> 옵션 병합 -> overlay presence 확보 -> toast 기록 -> dismiss 예약
-dismiss -> dismiss timer 취소 -> overlay 닫기 -> toast closing 표시 -> remove 예약
-remove -> 두 timer 취소 -> overlay 제거 -> toast 제거
-```
-
-Pause는 dismiss만 멈추고 closing 항목의 remove는 멈추지 않습니다. Resume은
-일시정지한 시간을 반영해 잔여 시간을 예약하며, ID를 재사용하면 이전 remove 예약을
-취소합니다. 구독 identity를 보존하도록 visible snapshot cache는 runtime에 남습니다.
-Toaster는 이 snapshot을 읽고 transport·측정·CSS의 브라우저 세부 사항은 분리하지만
-새 wrapper DOM은 추가하지 않습니다.
-
-## Exports
-
-- values → `toast`, `Toaster`, `ToastBar`, `ToastIcon`, `useToaster`, `useToastItems`, `createToastRuntime`
-- types → `ToastBarProps`, `ToastOptions`, `DefaultToastOptions`, `ToasterProps`, `UseToasterResult` 등 toast 관련 public 타입
-
-## Migration
-
-`react-hot-toast`에서 옮겨오는 경우 [MIGRATION_FROM_REACT_HOT_TOAST.ko.md](./MIGRATION_FROM_REACT_HOT_TOAST.ko.md)를 참고하세요.
-
-## Development
-
-Node 22와 pnpm 10.17.1을 사용하세요.
+이 저장소 루트에서 Node 22와 pnpm 10.17.1을 사용하세요.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -246,8 +76,18 @@ pnpm docs:build
 pnpm docs:test
 ```
 
-빌드 결과물은 `dist` 디렉터리에 생성됩니다. 문서는 `pnpm docs:start`로 로컬에서 확인할 수 있습니다. `@ilokesto/overlay`와 `@ilokesto/store`는 이 독립 저장소의 일반 레지스트리 의존성입니다.
+`dismiss()`는 닫기를 시작하고 `removeDelay` 후 제거하며 `remove()`는 즉시 제거합니다. Loading은 duration이 무한대이므로 같은 ID를 갱신하거나 명시적으로 닫으세요.
 
-## License
+Pause는 dismiss만 멈추고 closing 항목의 제거는 멈추지 않습니다. Resume은 일시정지 시간을 반영하며 ID 재사용은 이전 제거 예약을 취소합니다.
 
-MIT
+명령은 `toast.ts` → `createToastRuntime` 순서로 읽으세요. Runtime은 overlay presence, toast 상태와 구독 snapshot identity를 소유합니다. 옵션 병합은 순수 계산이고 timer는 runtime 명령만 호출합니다.
+
+`transport="top-layer"`는 manual popover를 사용하고 미지원 브라우저에서는 inline으로 전환합니다.
+
+문서: `pnpm docs:start`. `docs/`는 한영 원본, `website/`는 렌더러입니다.
+
+`@ilokesto/overlay`와 `@ilokesto/store`는 레지스트리 의존성입니다. Runtime과 직접 import한 overlay가 같은 물리적 Overlay/Store 인스턴스를 사용하도록 유지하세요.
+
+라이선스: MIT.
+
+</details>
