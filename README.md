@@ -61,7 +61,7 @@ Use a unique `toasterId` for each stack. `useToaster()` belongs in a descendant 
 <details>
 <summary>Development</summary>
 
-Use Node 22 and pnpm 10.17.1 from this repository root.
+Use Node 24.22.1 and pnpm 10.17.1 from this repository root.
 
 ```bash
 pnpm install --frozen-lockfile

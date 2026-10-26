@@ -1,7 +1,7 @@
 # @ilokesto/toast
 
 This repository owns one public library and its private local documentation workspace.
-Use Node 22 and pnpm 10.17.1. Run commands from this root.
+Use Node 24.22.1 and pnpm 10.17.1. Run commands from this root.
 
 - Keep the toast notification API, timers, queue and lifecycle behavior intact.
 - Library source and tests are in `src/` and `test/`; canonical bilingual MDX is in `docs/`.
