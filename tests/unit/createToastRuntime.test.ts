@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { createToastRuntime } from "../src/core/createToastRuntime";
-import type { ToastRuntimeApi } from "../src/types/toast";
+import { createToastRuntime } from "../../src/core/createToastRuntime";
+import type { ToastRuntimeApi } from "../../src/types/toast";
 
 function createRuntime(): ToastRuntimeApi {
   return createToastRuntime("test-toaster");

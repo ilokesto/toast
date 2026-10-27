@@ -59,11 +59,11 @@ export function App() {
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm build
 pnpm typecheck
 pnpm test
-pnpm test:tooling
 ```
+
+`typecheck`는 라이브러리 코드를 검사합니다. `test`는 한 번 빌드한 뒤 `test:unit`, `test:tooling`를 실행합니다. 런타임 테스트는 `tests/unit`, fixture·setup은 `tests/fixtures`, Node 도구 테스트는 `tests/tooling`에 있습니다.
 
 `dismiss()`는 닫기를 시작하고 `removeDelay` 후 제거하며 `remove()`는 즉시 제거합니다. Loading은 duration이 무한대이므로 같은 ID를 갱신하거나 명시적으로 닫으세요.
 

@@ -59,11 +59,11 @@ Use Node 24.22.1 and pnpm 10.17.1 from this repository root.
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm build
 pnpm typecheck
 pnpm test
-pnpm test:tooling
 ```
+
+`typecheck` checks library code. `test` builds once and runs `test:unit` and `test:tooling`. Runtime tests live in `tests/unit`, fixtures/setup in `tests/fixtures`, and Node tooling tests in `tests/tooling`.
 
 `dismiss()` starts closing and removes after `removeDelay`; `remove()` removes immediately. Loading duration is infinite: update the same id or dismiss explicitly.
 

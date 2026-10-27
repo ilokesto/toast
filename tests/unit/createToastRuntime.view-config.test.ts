@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createToastRuntime } from "../src/core/createToastRuntime";
+import { createToastRuntime } from "../../src/core/createToastRuntime";
 import type {
   DefaultToastOptions,
   ToastRuntimeApi,
-} from "../src/types/toast";
+} from "../../src/types/toast";
 
 const CONFIGURED_TOAST_OPTIONS = {
   duration: 12_345,

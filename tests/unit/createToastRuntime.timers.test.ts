@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { createToastRuntime } from "../src/core/createToastRuntime";
+import { createToastRuntime } from "../../src/core/createToastRuntime";
 
 beforeEach(() => {
   vi.useFakeTimers();
