@@ -10,15 +10,6 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:tooling": "node --test --test-concurrency=2 tests/tooling/*.test.mjs",
-    "docs:prepare": "pnpm build",
-    "docs:dev": "pnpm docs:prepare && pnpm --dir website dev",
-    "docs:build": "pnpm docs:prepare && pnpm --dir website build",
-    "docs:typecheck": "pnpm docs:prepare && pnpm --dir website typecheck",
-    "docs:test": "pnpm --dir website test",
-    "docs:start": "pnpm --dir website start",
-    "docs:publication:verify": "node scripts/docs-publication.mjs verify && node scripts/docs-runtime.mjs verify",
-    "docs:publication:capture": "node scripts/docs-publication.mjs capture",
-    "docs:publication:promote": "node scripts/docs-publication.mjs promote",
     "release:verify": "node scripts/release-verify.mjs",
     "changeset": "changeset",
     "changeset:status": "changeset status",
@@ -28,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/ilokesto/toast.git"
   },
-  "homepage": "https://ilokesto.ayden94.com/en/toast",
+  "homepage": "https://github.com/ilokesto/toast#readme",
   "sideEffects": false,
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
@@ -54,11 +45,6 @@
   "author": "Jeong Jinho <wpfekdml@me.com>",
   "license": "MIT",
   "packageManager": "pnpm@10.17.1",
-  "pnpm": {
-    "overrides": {
-      "mdast-util-to-markdown": "2.1.2"
-    }
-  },
   "dependencies": {
     "@ilokesto/overlay": "^2.0.1",
     "@ilokesto/store": "^2.0.1"
