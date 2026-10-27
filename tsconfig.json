@@ -16,6 +16,5 @@
     "removeComments": true,
     "types": ["node", "vitest/globals"]
   },
-  "include": ["src"],
-  "exclude": ["test"]
+  "include": ["src"]
 }

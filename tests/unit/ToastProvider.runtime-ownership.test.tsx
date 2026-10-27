@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom/vitest";
 import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { Toaster } from "../src/components/Toaster";
-import { getRuntime } from "../src/core/registry";
-import { toast } from "../src/core/toast";
+import { Toaster } from "../../src/components/Toaster";
+import { getRuntime } from "../../src/core/registry";
+import { toast } from "../../src/core/toast";
 
 const TOASTER_ID = "runtime-ownership-toaster";
 const OLD_TOASTER_ID = `${TOASTER_ID}-old`;

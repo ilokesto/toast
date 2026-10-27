@@ -1,8 +1,8 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Toaster } from "../src/components/Toaster";
-import { getRuntime } from "../src/core/registry";
-import type { ToastPosition } from "../src/types/toast";
+import { Toaster } from "../../src/components/Toaster";
+import { getRuntime } from "../../src/core/registry";
+import type { ToastPosition } from "../../src/types/toast";
 
 const TOASTER_ID = "top-layer-position-toaster";
 const originalShowPopover = Object.getOwnPropertyDescriptor(

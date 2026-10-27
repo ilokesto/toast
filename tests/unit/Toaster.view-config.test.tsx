@@ -1,11 +1,11 @@
 import "@testing-library/jest-dom/vitest";
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { Toaster } from "../src/components/Toaster";
-import { getRuntime } from "../src/core/registry";
-import { toast } from "../src/core/toast";
-import { useToaster } from "../src/hooks/useToaster";
-import type { DefaultToastOptions } from "../src/types/toast";
+import { Toaster } from "../../src/components/Toaster";
+import { getRuntime } from "../../src/core/registry";
+import { toast } from "../../src/core/toast";
+import { useToaster } from "../../src/hooks/useToaster";
+import type { DefaultToastOptions } from "../../src/types/toast";
 
 const TOASTER_ID = "view-config-toaster";
 const CONFIGURED_TOAST_OPTIONS = {

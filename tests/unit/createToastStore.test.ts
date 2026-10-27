@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { createToastStore } from "../src/core/createToastStore";
-import type { ToastItem } from "../src/types/toast";
+import { createToastStore } from "../../src/core/createToastStore";
+import type { ToastItem } from "../../src/types/toast";
 
 function createTestItem(overrides: Partial<ToastItem> = {}): ToastItem {
   return {

@@ -7,8 +7,9 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "pnpm build && pnpm test:unit && pnpm test:tooling",
+    "test:unit": "vitest run tests/unit",
+    "test:watch": "vitest tests/unit",
     "test:tooling": "node --test --test-concurrency=2 tests/tooling/*.test.mjs",
     "release:verify": "node scripts/release-verify.mjs",
     "changeset": "changeset",
