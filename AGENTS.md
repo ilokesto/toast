@@ -12,6 +12,10 @@ Use Node 24.22.1 and pnpm 10.17.1. Run commands from this root.
 - Run `pnpm typecheck` for library code and `pnpm test` for the full aggregate:
   build once, `test:unit`, and `test:tooling`.
 - Consumer-facing changes need a root Changeset.
+- Follow [JSDOC.md](./JSDOC.md) for English runtime API documentation, including
+  callable facade methods and finite owned parameter/return fields. Run
+  `pnpm lint:jsdoc`; `pnpm test:tooling` enforces the semantic contract and fixtures.
+  Keep JSDoc in emitted declarations.
 - `release:verify --sha <full-SHA>` is read-only. Main merges maintain the Changesets release PR; merging
   it publishes only the exact successful Verify artifact through GitHub Actions with the
   latest dist-tag. Never publish locally.

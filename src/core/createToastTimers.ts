@@ -3,7 +3,23 @@ import { DEFAULT_REMOVE_DELAY } from "./utils";
 
 type ToastTimer = ReturnType<typeof setTimeout>;
 
-/** Owns timeout handles; runtime commands retain ownership of toast/overlay state. */
+/**
+ * @description Owns dismissal and removal timeout handles while callers retain ownership of toast and overlay state.
+ * @param {(id: string) => void} dismiss - Marks the selected toast closing while retaining its exit animation.
+ * @param {(id: string) => void} remove - Immediately removes the selected toast and clears its timers.
+ * @returns {{ scheduleDismiss: (item: ToastItem) => void; scheduleRemove: (item: ToastItem) => void; clearDismiss: (id: string) => void; clearRemove: (id: string) => void; clear: () => void; }} Runtime value and controls described below.
+ * - scheduleDismiss `(item: ToastItem) => void` - Schedules dismissal using remaining visible time; skips infinite or paused items.
+ * - scheduleRemove `(item: ToastItem) => void` - Schedules physical removal after the configured exit delay.
+ * - clearDismiss `(id: string) => void` - Cancels a pending dismissal timer for the identifier.
+ * - clearRemove `(id: string) => void` - Cancels a pending removal timer for the identifier.
+ * - clear `() => void` - Cancels all pending dismissal and removal handles.
+ * @example
+ * ```ts
+ * const timers = createToastTimers(runtime.dismiss, runtime.remove);
+ * timers.scheduleDismiss(item);
+ * timers.clear();
+ * ```
+ */
 export function createToastTimers(
   dismiss: (id: ToastId) => void,
   remove: (id: ToastId) => void,

@@ -8,13 +8,28 @@ function supportsPopover(): boolean {
   return typeof HTMLElement.prototype.showPopover === "function";
 }
 
+/**
+ * @description Renders notifications in a manual popover when supported, with an inline fallback otherwise.
+ * @param {{ readonly style: CSSProperties; readonly className?: string | undefined; readonly children: ReactNode; }} props - Properties for the rendered component.
+ * @param {CSSProperties} props.style - Positioning and appearance of the notification container.
+ * @param {string | undefined} [props.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} props.children - Notification rows rendered inside the container.
+ * @returns {Element} Rendered notification element.
+ * @example
+ * ```tsx
+ * <TopLayerContainer style={{ position: "fixed" }}>Notifications</TopLayerContainer>
+ * ```
+ */
 export function TopLayerContainer({
   style,
   className,
   children,
 }: {
+  /** Positioning and appearance of the notification container. */
   readonly style: CSSProperties;
+  /** CSS class applied to the rendered element. */
   readonly className?: string;
+  /** Notification rows rendered inside the container. */
   readonly children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -72,13 +87,28 @@ export function TopLayerContainer({
   );
 }
 
+/**
+ * @description Renders an inline container for notification rows.
+ * @param {{ readonly style: CSSProperties; readonly className?: string | undefined; readonly children: ReactNode; }} props - Properties for the rendered component.
+ * @param {CSSProperties} props.style - Positioning and appearance of the notification container.
+ * @param {string | undefined} [props.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} props.children - Notification rows rendered inside the container.
+ * @returns {Element} Rendered notification element.
+ * @example
+ * ```tsx
+ * <InlineContainer style={{ position: "fixed" }}>Notifications</InlineContainer>
+ * ```
+ */
 export function InlineContainer({
   style,
   className,
   children,
 }: {
+  /** Positioning and appearance of the notification container. */
   readonly style: CSSProperties;
+  /** CSS class applied to the rendered element. */
   readonly className?: string;
+  /** Notification rows rendered inside the container. */
   readonly children: ReactNode;
 }) {
   return (

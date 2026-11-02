@@ -8,6 +8,14 @@ import type {
 
 let counter = 0;
 
+/**
+ * @description Generates a toast identifier from a process-local counter and the current timestamp.
+ * @returns {string} Generated identifier.
+ * @example
+ * ```ts
+ * const id = generateToastId();
+ * ```
+ */
 export function generateToastId(): ToastId {
   counter += 1;
   return `toast-${counter}-${Date.now()}`;
@@ -40,6 +48,16 @@ export const DEFAULT_ICON_THEME: Record<"success" | "error", IconTheme> = {
   error: { primary: "#ff4b4b", secondary: "#ffffff" },
 };
 
+/**
+ * @description Resolves a literal value or invokes its callback with the supplied argument.
+ * @param {TValue | ((arg: TArg) => TValue)} value - A value or resolver invoked with the supplied argument.
+ * @param {TArg} arg - Argument passed to the resolver; ignored for a literal value.
+ * @returns {TValue} Resolved value.
+ * @example
+ * ```ts
+ * const text = resolveValue((count: number) => `Saved ${count}`, 2);
+ * ```
+ */
 export function resolveValue<TValue, TArg>(
   value: TValue | ((arg: TArg) => TValue),
   arg: TArg,

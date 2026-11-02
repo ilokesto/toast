@@ -62,6 +62,120 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
   };
 }
 
+/**
+ * @description Mounts an isolated toaster runtime, renders its active region and pauses dismissal while the pointer is inside.
+ * @param {ToasterProps} props - Properties for the rendered component.
+ * @param {string | undefined} [props.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {ToastPosition | undefined} [props.position] - Viewport region used to group and align toast rows.
+ * @param {ToastTransport | undefined} [props.transport] - Inline rendering or the browser popover top layer with inline fallback.
+ * @param {number | undefined} [props.limit] - Maximum number of rows exposed by the active view.
+ * @param {boolean | undefined} [props.reverseOrder] - Whether to place the newest item before older items.
+ * @param {number | undefined} [props.gutter] - Spacing between toast rows in pixels.
+ * @param {CSSProperties | undefined} [props.containerStyle] - Inline style overrides for the viewport container.
+ * @param {string | undefined} [props.containerClassName] - CSS class for the viewport container.
+ * @param {DefaultToastOptions | undefined} [props.toastOptions] - Shared defaults with optional per-kind overrides.
+ * @param {ToastOptions | undefined} [props.toastOptions.success] - Defaults for success notifications.
+ * @param {string | undefined} [props.toastOptions.success.id] - Stable toast identifier; reuse it to update an existing toast.
+ * @param {string | undefined} [props.toastOptions.success.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {number | undefined} [props.toastOptions.success.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {ToastPosition | undefined} [props.toastOptions.success.position] - Viewport region used to group and align toast rows.
+ * @param {ToastAriaProps | undefined} [props.toastOptions.success.ariaProps] - Live-region attributes used to announce the notification.
+ * @param {"status" | "alert"} [props.toastOptions.success.ariaProps.role] - Announcement role; alert announces urgent errors.
+ * @param {"polite" | "assertive"} [props.toastOptions.success.ariaProps.aria-live] - Politeness level for assistive technology announcements.
+ * @param {boolean | undefined} [props.toastOptions.success.ariaProps.aria-atomic] - Whether the complete notification is announced on changes.
+ * @param {CSSProperties | undefined} [props.toastOptions.success.style] - Inline style overrides applied to the toast row.
+ * @param {string | undefined} [props.toastOptions.success.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} [props.toastOptions.success.icon] - Custom React icon content; overrides the built-in status icon.
+ * @param {IconTheme | undefined} [props.toastOptions.success.iconTheme] - Colors for the built-in success or error icon.
+ * @param {string} [props.toastOptions.success.iconTheme.primary] - Icon background color.
+ * @param {string} [props.toastOptions.success.iconTheme.secondary] - Icon foreground color.
+ * @param {number | undefined} [props.toastOptions.success.removeDelay] - Delay in milliseconds between dismissal and physical removal.
+ * @param {ToastOptions | undefined} [props.toastOptions.error] - Defaults for error notifications.
+ * @param {string | undefined} [props.toastOptions.error.id] - Stable toast identifier; reuse it to update an existing toast.
+ * @param {string | undefined} [props.toastOptions.error.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {number | undefined} [props.toastOptions.error.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {ToastPosition | undefined} [props.toastOptions.error.position] - Viewport region used to group and align toast rows.
+ * @param {ToastAriaProps | undefined} [props.toastOptions.error.ariaProps] - Live-region attributes used to announce the notification.
+ * @param {"status" | "alert"} [props.toastOptions.error.ariaProps.role] - Announcement role; alert announces urgent errors.
+ * @param {"polite" | "assertive"} [props.toastOptions.error.ariaProps.aria-live] - Politeness level for assistive technology announcements.
+ * @param {boolean | undefined} [props.toastOptions.error.ariaProps.aria-atomic] - Whether the complete notification is announced on changes.
+ * @param {CSSProperties | undefined} [props.toastOptions.error.style] - Inline style overrides applied to the toast row.
+ * @param {string | undefined} [props.toastOptions.error.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} [props.toastOptions.error.icon] - Custom React icon content; overrides the built-in status icon.
+ * @param {IconTheme | undefined} [props.toastOptions.error.iconTheme] - Colors for the built-in success or error icon.
+ * @param {string} [props.toastOptions.error.iconTheme.primary] - Icon background color.
+ * @param {string} [props.toastOptions.error.iconTheme.secondary] - Icon foreground color.
+ * @param {number | undefined} [props.toastOptions.error.removeDelay] - Delay in milliseconds between dismissal and physical removal.
+ * @param {ToastOptions | undefined} [props.toastOptions.loading] - Defaults for loading notifications.
+ * @param {string | undefined} [props.toastOptions.loading.id] - Stable toast identifier; reuse it to update an existing toast.
+ * @param {string | undefined} [props.toastOptions.loading.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {number | undefined} [props.toastOptions.loading.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {ToastPosition | undefined} [props.toastOptions.loading.position] - Viewport region used to group and align toast rows.
+ * @param {ToastAriaProps | undefined} [props.toastOptions.loading.ariaProps] - Live-region attributes used to announce the notification.
+ * @param {"status" | "alert"} [props.toastOptions.loading.ariaProps.role] - Announcement role; alert announces urgent errors.
+ * @param {"polite" | "assertive"} [props.toastOptions.loading.ariaProps.aria-live] - Politeness level for assistive technology announcements.
+ * @param {boolean | undefined} [props.toastOptions.loading.ariaProps.aria-atomic] - Whether the complete notification is announced on changes.
+ * @param {CSSProperties | undefined} [props.toastOptions.loading.style] - Inline style overrides applied to the toast row.
+ * @param {string | undefined} [props.toastOptions.loading.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} [props.toastOptions.loading.icon] - Custom React icon content; overrides the built-in status icon.
+ * @param {IconTheme | undefined} [props.toastOptions.loading.iconTheme] - Colors for the built-in success or error icon.
+ * @param {string} [props.toastOptions.loading.iconTheme.primary] - Icon background color.
+ * @param {string} [props.toastOptions.loading.iconTheme.secondary] - Icon foreground color.
+ * @param {number | undefined} [props.toastOptions.loading.removeDelay] - Delay in milliseconds between dismissal and physical removal.
+ * @param {ToastOptions | undefined} [props.toastOptions.blank] - Defaults for plain notifications.
+ * @param {string | undefined} [props.toastOptions.blank.id] - Stable toast identifier; reuse it to update an existing toast.
+ * @param {string | undefined} [props.toastOptions.blank.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {number | undefined} [props.toastOptions.blank.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {ToastPosition | undefined} [props.toastOptions.blank.position] - Viewport region used to group and align toast rows.
+ * @param {ToastAriaProps | undefined} [props.toastOptions.blank.ariaProps] - Live-region attributes used to announce the notification.
+ * @param {"status" | "alert"} [props.toastOptions.blank.ariaProps.role] - Announcement role; alert announces urgent errors.
+ * @param {"polite" | "assertive"} [props.toastOptions.blank.ariaProps.aria-live] - Politeness level for assistive technology announcements.
+ * @param {boolean | undefined} [props.toastOptions.blank.ariaProps.aria-atomic] - Whether the complete notification is announced on changes.
+ * @param {CSSProperties | undefined} [props.toastOptions.blank.style] - Inline style overrides applied to the toast row.
+ * @param {string | undefined} [props.toastOptions.blank.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} [props.toastOptions.blank.icon] - Custom React icon content; overrides the built-in status icon.
+ * @param {IconTheme | undefined} [props.toastOptions.blank.iconTheme] - Colors for the built-in success or error icon.
+ * @param {string} [props.toastOptions.blank.iconTheme.primary] - Icon background color.
+ * @param {string} [props.toastOptions.blank.iconTheme.secondary] - Icon foreground color.
+ * @param {number | undefined} [props.toastOptions.blank.removeDelay] - Delay in milliseconds between dismissal and physical removal.
+ * @param {ToastOptions | undefined} [props.toastOptions.custom] - Defaults for custom notification content.
+ * @param {string | undefined} [props.toastOptions.custom.id] - Stable toast identifier; reuse it to update an existing toast.
+ * @param {string | undefined} [props.toastOptions.custom.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {number | undefined} [props.toastOptions.custom.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {ToastPosition | undefined} [props.toastOptions.custom.position] - Viewport region used to group and align toast rows.
+ * @param {ToastAriaProps | undefined} [props.toastOptions.custom.ariaProps] - Live-region attributes used to announce the notification.
+ * @param {"status" | "alert"} [props.toastOptions.custom.ariaProps.role] - Announcement role; alert announces urgent errors.
+ * @param {"polite" | "assertive"} [props.toastOptions.custom.ariaProps.aria-live] - Politeness level for assistive technology announcements.
+ * @param {boolean | undefined} [props.toastOptions.custom.ariaProps.aria-atomic] - Whether the complete notification is announced on changes.
+ * @param {CSSProperties | undefined} [props.toastOptions.custom.style] - Inline style overrides applied to the toast row.
+ * @param {string | undefined} [props.toastOptions.custom.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} [props.toastOptions.custom.icon] - Custom React icon content; overrides the built-in status icon.
+ * @param {IconTheme | undefined} [props.toastOptions.custom.iconTheme] - Colors for the built-in success or error icon.
+ * @param {string} [props.toastOptions.custom.iconTheme.primary] - Icon background color.
+ * @param {string} [props.toastOptions.custom.iconTheme.secondary] - Icon foreground color.
+ * @param {number | undefined} [props.toastOptions.custom.removeDelay] - Delay in milliseconds between dismissal and physical removal.
+ * @param {string | undefined} [props.toastOptions.id] - Stable toast identifier; reuse it to update an existing toast.
+ * @param {string | undefined} [props.toastOptions.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {number | undefined} [props.toastOptions.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {ToastPosition | undefined} [props.toastOptions.position] - Viewport region used to group and align toast rows.
+ * @param {ToastAriaProps | undefined} [props.toastOptions.ariaProps] - Live-region attributes used to announce the notification.
+ * @param {"status" | "alert"} [props.toastOptions.ariaProps.role] - Announcement role; alert announces urgent errors.
+ * @param {"polite" | "assertive"} [props.toastOptions.ariaProps.aria-live] - Politeness level for assistive technology announcements.
+ * @param {boolean | undefined} [props.toastOptions.ariaProps.aria-atomic] - Whether the complete notification is announced on changes.
+ * @param {CSSProperties | undefined} [props.toastOptions.style] - Inline style overrides applied to the toast row.
+ * @param {string | undefined} [props.toastOptions.className] - CSS class applied to the rendered element.
+ * @param {ReactNode} [props.toastOptions.icon] - Custom React icon content; overrides the built-in status icon.
+ * @param {IconTheme | undefined} [props.toastOptions.iconTheme] - Colors for the built-in success or error icon.
+ * @param {string} [props.toastOptions.iconTheme.primary] - Icon background color.
+ * @param {string} [props.toastOptions.iconTheme.secondary] - Icon foreground color.
+ * @param {number | undefined} [props.toastOptions.removeDelay] - Delay in milliseconds between dismissal and physical removal.
+ * @param {((item: ToastItem, helpers: ToastRowHelpers) => ReactNode) | undefined} [props.children] - Custom row renderer receiving the item and its dismiss/remove controls.
+ * @returns {Element} Rendered notification element.
+ * @example
+ * ```tsx
+ * <Toaster position="top-right" limit={3} toastOptions={{ duration: 4000 }} />
+ * ```
+ */
 export function Toaster({
   toasterId,
   position = DEFAULT_POSITION,
