@@ -6,8 +6,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {ToastType} type - Visual notification kind and default timing policy.
  * @param {DefaultToastOptions | undefined} defaultOptions - View defaults followed by per-kind defaults; undefined uses built-in defaults.
  * @param {ToastOptions | undefined} [defaultOptions.success] - Defaults for success notifications.
- * @param {string | undefined} [defaultOptions.success.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [defaultOptions.success.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [defaultOptions.success.id] - Copied into the merged options, but ignored for runtime toast identity.
+ * @param {string | undefined} [defaultOptions.success.toasterId] - Copied into the merged options, but ignored for runtime ownership.
  * @param {number | undefined} [defaultOptions.success.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [defaultOptions.success.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [defaultOptions.success.ariaProps] - Live-region attributes used to announce the notification.
@@ -22,8 +22,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [defaultOptions.success.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [defaultOptions.success.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [defaultOptions.error] - Defaults for error notifications.
- * @param {string | undefined} [defaultOptions.error.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [defaultOptions.error.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [defaultOptions.error.id] - Copied into the merged options, but ignored for runtime toast identity.
+ * @param {string | undefined} [defaultOptions.error.toasterId] - Copied into the merged options, but ignored for runtime ownership.
  * @param {number | undefined} [defaultOptions.error.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [defaultOptions.error.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [defaultOptions.error.ariaProps] - Live-region attributes used to announce the notification.
@@ -38,8 +38,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [defaultOptions.error.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [defaultOptions.error.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [defaultOptions.loading] - Defaults for loading notifications.
- * @param {string | undefined} [defaultOptions.loading.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [defaultOptions.loading.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [defaultOptions.loading.id] - Copied into the merged options, but ignored for runtime toast identity.
+ * @param {string | undefined} [defaultOptions.loading.toasterId] - Copied into the merged options, but ignored for runtime ownership.
  * @param {number | undefined} [defaultOptions.loading.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [defaultOptions.loading.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [defaultOptions.loading.ariaProps] - Live-region attributes used to announce the notification.
@@ -54,8 +54,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [defaultOptions.loading.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [defaultOptions.loading.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [defaultOptions.blank] - Defaults for plain notifications.
- * @param {string | undefined} [defaultOptions.blank.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [defaultOptions.blank.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [defaultOptions.blank.id] - Copied into the merged options, but ignored for runtime toast identity.
+ * @param {string | undefined} [defaultOptions.blank.toasterId] - Copied into the merged options, but ignored for runtime ownership.
  * @param {number | undefined} [defaultOptions.blank.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [defaultOptions.blank.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [defaultOptions.blank.ariaProps] - Live-region attributes used to announce the notification.
@@ -70,8 +70,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [defaultOptions.blank.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [defaultOptions.blank.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [defaultOptions.custom] - Defaults for custom notification content.
- * @param {string | undefined} [defaultOptions.custom.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [defaultOptions.custom.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [defaultOptions.custom.id] - Copied into the merged options, but ignored for runtime toast identity.
+ * @param {string | undefined} [defaultOptions.custom.toasterId] - Copied into the merged options, but ignored for runtime ownership.
  * @param {number | undefined} [defaultOptions.custom.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [defaultOptions.custom.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [defaultOptions.custom.ariaProps] - Live-region attributes used to announce the notification.
@@ -85,8 +85,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [defaultOptions.custom.iconTheme.primary] - Icon background color.
  * @param {string} [defaultOptions.custom.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [defaultOptions.custom.removeDelay] - Delay in milliseconds between dismissal and physical removal.
- * @param {string | undefined} [defaultOptions.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [defaultOptions.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [defaultOptions.id] - Copied into the merged options, but ignored for runtime toast identity.
+ * @param {string | undefined} [defaultOptions.toasterId] - Copied into the merged options, but ignored for runtime ownership.
  * @param {number | undefined} [defaultOptions.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [defaultOptions.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [defaultOptions.ariaProps] - Live-region attributes used to announce the notification.
@@ -100,7 +100,7 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [defaultOptions.iconTheme.primary] - Icon background color.
  * @param {string} [defaultOptions.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [defaultOptions.removeDelay] - Delay in milliseconds between dismissal and physical removal.
- * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+ * @param {ToastOptions | undefined} [options] - Overrides for the merged options; runtime identity and ownership are selected separately.
  * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
  * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
  * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
@@ -117,8 +117,8 @@ import { DEFAULT_ARIA_PROPS, DEFAULT_ICON_THEME } from "./utils";
  * @param {string} [options.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [options.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @returns {ToastOptions} Merged toast settings including announcement and icon defaults.
- * - id `string | undefined` - Stable toast identifier; reuse it to update an existing toast.
- * - toasterId `string | undefined` - Identifier of the mounted toaster that owns the notification.
+ * - id `string | undefined` - Copied identity setting; the runtime uses the original per-call id instead.
+ * - toasterId `string | undefined` - Copied routing setting; the runtime retains its captured owner instead.
  * - duration `number | undefined` - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * - position `ToastPosition | undefined` - Viewport region used to group and align toast rows.
  * - ariaProps `ToastAriaProps | undefined` - Live-region attributes used to announce the notification.

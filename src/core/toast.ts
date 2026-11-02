@@ -64,7 +64,7 @@ createToast.remove = function remove(id?: ToastId, toasterId?: ToasterId): void 
 /**
  * @description Creates a plain toast in a mounted toaster, or updates an existing toast when its identifier is reused.
  * @param {ReactNode} message - React content displayed in the toast row.
- * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+ * @param {ToastOptions | undefined} [options] - Per-call identity, routing and display overrides; only omitted display settings inherit defaults.
  * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
  * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
  * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.

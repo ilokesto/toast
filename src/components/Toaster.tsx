@@ -75,8 +75,8 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
  * @param {string | undefined} [props.containerClassName] - CSS class for the viewport container.
  * @param {DefaultToastOptions | undefined} [props.toastOptions] - Shared defaults with optional per-kind overrides.
  * @param {ToastOptions | undefined} [props.toastOptions.success] - Defaults for success notifications.
- * @param {string | undefined} [props.toastOptions.success.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [props.toastOptions.success.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [props.toastOptions.success.id] - Ignored in defaults; pass id to an individual toast call.
+ * @param {string | undefined} [props.toastOptions.success.toasterId] - Ignored in defaults; the top-level toasterId selects this runtime.
  * @param {number | undefined} [props.toastOptions.success.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [props.toastOptions.success.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [props.toastOptions.success.ariaProps] - Live-region attributes used to announce the notification.
@@ -91,8 +91,8 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
  * @param {string} [props.toastOptions.success.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [props.toastOptions.success.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [props.toastOptions.error] - Defaults for error notifications.
- * @param {string | undefined} [props.toastOptions.error.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [props.toastOptions.error.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [props.toastOptions.error.id] - Ignored in defaults; pass id to an individual toast call.
+ * @param {string | undefined} [props.toastOptions.error.toasterId] - Ignored in defaults; the top-level toasterId selects this runtime.
  * @param {number | undefined} [props.toastOptions.error.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [props.toastOptions.error.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [props.toastOptions.error.ariaProps] - Live-region attributes used to announce the notification.
@@ -107,9 +107,9 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
  * @param {string} [props.toastOptions.error.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [props.toastOptions.error.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [props.toastOptions.loading] - Defaults for loading notifications.
- * @param {string | undefined} [props.toastOptions.loading.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [props.toastOptions.loading.toasterId] - Identifier of the mounted toaster that owns the notification.
- * @param {number | undefined} [props.toastOptions.loading.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+ * @param {string | undefined} [props.toastOptions.loading.id] - Ignored in defaults; pass id to an individual toast call.
+ * @param {string | undefined} [props.toastOptions.loading.toasterId] - Ignored in defaults; the top-level toasterId selects this runtime.
+ * @param {number | undefined} [props.toastOptions.loading.duration] - Default lifetime in milliseconds; toast.loading overrides it to Infinity.
  * @param {ToastPosition | undefined} [props.toastOptions.loading.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [props.toastOptions.loading.ariaProps] - Live-region attributes used to announce the notification.
  * @param {"status" | "alert"} [props.toastOptions.loading.ariaProps.role] - Announcement role; alert announces urgent errors.
@@ -123,8 +123,8 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
  * @param {string} [props.toastOptions.loading.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [props.toastOptions.loading.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [props.toastOptions.blank] - Defaults for plain notifications.
- * @param {string | undefined} [props.toastOptions.blank.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [props.toastOptions.blank.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [props.toastOptions.blank.id] - Ignored in defaults; pass id to an individual toast call.
+ * @param {string | undefined} [props.toastOptions.blank.toasterId] - Ignored in defaults; the top-level toasterId selects this runtime.
  * @param {number | undefined} [props.toastOptions.blank.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [props.toastOptions.blank.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [props.toastOptions.blank.ariaProps] - Live-region attributes used to announce the notification.
@@ -139,8 +139,8 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
  * @param {string} [props.toastOptions.blank.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [props.toastOptions.blank.removeDelay] - Delay in milliseconds between dismissal and physical removal.
  * @param {ToastOptions | undefined} [props.toastOptions.custom] - Defaults for custom notification content.
- * @param {string | undefined} [props.toastOptions.custom.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [props.toastOptions.custom.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [props.toastOptions.custom.id] - Ignored in defaults; pass id to an individual toast call.
+ * @param {string | undefined} [props.toastOptions.custom.toasterId] - Ignored in defaults; the top-level toasterId selects this runtime.
  * @param {number | undefined} [props.toastOptions.custom.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [props.toastOptions.custom.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [props.toastOptions.custom.ariaProps] - Live-region attributes used to announce the notification.
@@ -154,8 +154,8 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
  * @param {string} [props.toastOptions.custom.iconTheme.primary] - Icon background color.
  * @param {string} [props.toastOptions.custom.iconTheme.secondary] - Icon foreground color.
  * @param {number | undefined} [props.toastOptions.custom.removeDelay] - Delay in milliseconds between dismissal and physical removal.
- * @param {string | undefined} [props.toastOptions.id] - Stable toast identifier; reuse it to update an existing toast.
- * @param {string | undefined} [props.toastOptions.toasterId] - Identifier of the mounted toaster that owns the notification.
+ * @param {string | undefined} [props.toastOptions.id] - Ignored in defaults; pass id to an individual toast call.
+ * @param {string | undefined} [props.toastOptions.toasterId] - Ignored in defaults; the top-level toasterId selects this runtime.
  * @param {number | undefined} [props.toastOptions.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
  * @param {ToastPosition | undefined} [props.toastOptions.position] - Viewport region used to group and align toast rows.
  * @param {ToastAriaProps | undefined} [props.toastOptions.ariaProps] - Live-region attributes used to announce the notification.

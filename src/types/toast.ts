@@ -237,7 +237,7 @@ export interface ToastFacade {
   /**
    * @description Creates or updates a success toast in the selected mounted toaster.
    * @param {ReactNode} message - React content displayed in the toast row.
-   * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+   * @param {ToastOptions | undefined} [options] - Per-call identity, routing and display overrides; only omitted display settings inherit defaults.
    * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
    * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
    * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
@@ -263,7 +263,7 @@ export interface ToastFacade {
   /**
    * @description Creates or updates an error toast in the selected mounted toaster.
    * @param {ReactNode} message - React content displayed in the toast row.
-   * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+   * @param {ToastOptions | undefined} [options] - Per-call identity, routing and display overrides; only omitted display settings inherit defaults.
    * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
    * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
    * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
@@ -289,10 +289,10 @@ export interface ToastFacade {
   /**
    * @description Creates a loading toast with infinite duration until updated, dismissed or removed.
    * @param {ReactNode} message - React content displayed in the toast row.
-   * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+   * @param {ToastOptions | undefined} [options] - Per-call identity, routing and display overrides; duration is always replaced with Infinity.
    * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
    * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
-   * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
+   * @param {number | undefined} [options.duration] - Accepted by the shared options type but always overridden to Infinity for loading.
    * @param {ToastPosition | undefined} [options.position] - Viewport region used to group and align toast rows.
    * @param {ToastAriaProps | undefined} [options.ariaProps] - Live-region attributes used to announce the notification.
    * @param {"status" | "alert"} [options.ariaProps.role] - Announcement role; alert announces urgent errors.
@@ -315,7 +315,7 @@ export interface ToastFacade {
   /**
    * @description Creates or updates a custom toast in the selected mounted toaster.
    * @param {ReactNode} message - React content displayed in the toast row.
-   * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+   * @param {ToastOptions | undefined} [options] - Per-call identity, routing and display overrides; only omitted display settings inherit defaults.
    * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
    * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
    * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
@@ -345,7 +345,7 @@ export interface ToastFacade {
    * @param {ReactNode} messages.loading - Content displayed while the promise is pending.
    * @param {ValueOrFunction<ReactNode, TData>} messages.success - Success content or a resolver receiving the fulfilled value.
    * @param {ValueOrFunction<ReactNode, unknown>} messages.error - Error content or a resolver receiving the rejection reason.
-   * @param {ToastOptions | undefined} [options] - Per-notification overrides; omitted fields inherit the configured defaults.
+   * @param {ToastOptions | undefined} [options] - Per-call identity, routing and display overrides; the pending loading phase uses infinite duration.
    * @param {string | undefined} [options.id] - Stable toast identifier; reuse it to update an existing toast.
    * @param {string | undefined} [options.toasterId] - Identifier of the mounted toaster that owns the notification.
    * @param {number | undefined} [options.duration] - Visible lifetime in milliseconds; Infinity disables automatic dismissal.
