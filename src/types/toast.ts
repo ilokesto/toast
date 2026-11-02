@@ -374,7 +374,7 @@ export interface ToastFacade {
   ): Promise<TData>;
   /**
    * @description Dismisses one toast or all toasts in the selected toaster, retaining the removal delay.
-   * @param {string | undefined} [id] - Stable toast identifier; reuse it to update an existing toast.
+   * @param {string | undefined} [id] - Identifier to dismiss; omit it to dismiss every toast in the selected toaster.
    * @param {string | undefined} [toasterId] - Identifier of the mounted toaster that owns the notification.
    * @example
    * ```ts
@@ -384,7 +384,7 @@ export interface ToastFacade {
   dismiss(id?: ToastId, toasterId?: ToasterId): void;
   /**
    * @description Immediately removes one toast or all toasts in the selected toaster.
-   * @param {string | undefined} [id] - Stable toast identifier; reuse it to update an existing toast.
+   * @param {string | undefined} [id] - Identifier to remove; omit it to remove every toast in the selected toaster.
    * @param {string | undefined} [toasterId] - Identifier of the mounted toaster that owns the notification.
    * @example
    * ```ts
