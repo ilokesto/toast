@@ -1,5 +1,11 @@
 # @ilokesto/toast
 
+## 2.0.3
+
+### Patch Changes
+
+- ad228c6: Retain comprehensive English API JSDoc in published declarations, including toast facade controls and lifecycle options.
+
 ## 2.0.2
 
 ### Patch Changes
