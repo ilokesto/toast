@@ -1,5 +1,11 @@
 # @ilokesto/toast
 
+## 2.0.2
+
+### Patch Changes
+
+- d2c0445: Require Node.js 24.22.1 or newer and use the security-patched 24.22.1 release for development and CI.
+
 ## 2.0.1
 
 ### Patch Changes
