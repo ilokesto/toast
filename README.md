@@ -12,6 +12,8 @@ React notifications with a familiar `toast.*` API, a default UI, and custom rend
 
 ## Installation
 
+Contributors: follow the English API contract in [JSDOC.md](./JSDOC.md) and run `pnpm lint:jsdoc` or the complete `pnpm test` gate before submitting changes.
+
 ```bash
 pnpm add @ilokesto/toast react react-dom
 ```

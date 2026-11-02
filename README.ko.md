@@ -12,6 +12,8 @@
 
 ## 설치
 
+기여자는 [JSDOC.md](./JSDOC.md)의 영어 API 문서 계약을 따르고 변경 제출 전에 `pnpm lint:jsdoc` 또는 전체 `pnpm test` 검증을 실행하세요.
+
 ```bash
 pnpm add @ilokesto/toast react react-dom
 ```

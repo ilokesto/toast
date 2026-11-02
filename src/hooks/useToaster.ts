@@ -8,6 +8,23 @@ import type {
 import { DEFAULT_GUTTER } from "../core/utils";
 import { useToastItems } from "./useToastItems";
 
+/**
+ * @description Reads visible toasts and layout controls from the surrounding Toaster; throws outside its context.
+ * @returns {UseToasterResult} Current visible items and custom renderer controls.
+ * - toasts `readonly ToastItem[]` - Current visible items from the surrounding toaster runtime.
+ * - handlers `{ updateHeight: (id: string, height: number) => void; startPause: () => void; endPause: () => void; calculateOffset: (toast: ToastItem, options?: ToastOffsetOptions | undefined) => number; }` - Measurement, pause and layout controls for custom renderers.
+ * : handlers.updateHeight `(id: string, height: number) => void` - Records the measured row height in pixels.
+ * : handlers.startPause `() => void` - Pauses automatic dismissal for visible notifications.
+ * : handlers.endPause `() => void` - Resumes dismissal after accounting for time spent paused.
+ * : handlers.calculateOffset `(toast: ToastItem, options?: ToastOffsetOptions | undefined) => number` - Returns the summed heights and gutters of preceding rows in pixels.
+ * @example
+ * ```tsx
+ * function Summary() {
+ *   const { toasts, handlers } = useToaster();
+ *   return <div onMouseEnter={handlers.startPause}>{toasts.length}</div>;
+ * }
+ * ```
+ */
 export function useToaster(): UseToasterResult {
   const runtime = useContext(ToasterContext);
 
