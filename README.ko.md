@@ -82,6 +82,11 @@ Pause는 dismiss만 멈추고 closing 항목의 제거는 멈추지 않습니다
 때까지 자리를 차지합니다. 같은 ID 갱신은 수명을 초기화하며 대기 중이면 표시될
 때 새 수명을 시작합니다. 큐와 한도는 모든 위치 영역이 공유합니다.
 
+`clear()`와 Toaster unmount, `remove()`, 같은 ID의 새 갱신은 이전 promise
+토스트의 UI 갱신 권한을 해제합니다. 오래된 완료는 행을 다시 만들거나 최신
+알림을 덮지 않고 메시지 resolver도 호출하지 않습니다. 반환된 Promise는 원래
+작업의 성공 값과 rejection을 그대로 전달하며 작업 자체를 취소하지 않습니다.
+
 명령은 `toast.ts` → `createToastRuntime` 순서로 읽으세요. Runtime은 overlay presence, toast 상태와 구독 snapshot identity를 소유합니다. 옵션 병합은 순수 계산이고 timer는 runtime 명령만 호출합니다.
 
 `transport="top-layer"`는 manual popover를 사용하고 미지원 브라우저에서는 inline으로 전환합니다.
