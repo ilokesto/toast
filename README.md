@@ -76,6 +76,13 @@ pnpm test
 
 Pause stops dismissal, not removal of closing items. Resume accounts for paused time; reusing an id cancels its old removal.
 
+Queued toasts start their duration when they enter the displayed `limit`.
+Reducing the limit suspends hidden items with their remaining duration intact;
+expanding it resumes them. Hidden and paused time never consume duration,
+including when both overlap. Closing rows keep their slot until removal.
+Updating an id resets its duration, starting immediately if displayed or on
+promotion if queued. The queue and limit are shared across position regions.
+
 Follow `toast.ts` → `createToastRuntime`. The runtime owns overlay presence, toast state, and subscription snapshot identity. Option merging is pure; timers only invoke runtime commands.
 
 `transport="top-layer"` uses manual popover and falls back to inline on unsupported browsers.

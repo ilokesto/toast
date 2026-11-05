@@ -54,6 +54,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   const store = createToastStore();
   const overlayStore: OverlayStoreApi = createOverlayStore();
   const timers = createToastTimers(dismiss, remove);
+  const lifetimes = new Map<ToastId, { remaining: number; startedAt: number | null }>();
   const listeners = new Set<() => void>();
   let isPaused = false;
   const view: { limit: number; position: ToastPosition; toastOptions?: DefaultToastOptions } = {
@@ -103,6 +104,38 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     return store.getSnapshot().find((item) => item.id === id);
   }
 
+  function syncDismissTimers(): void {
+    const items = store.getSnapshot();
+    const displayedIds = new Set(getVisibleItems(items).map((item) => item.id));
+    const now = Date.now();
+
+    for (const item of items) {
+      const lifetime = lifetimes.get(item.id);
+      if (lifetime === undefined) {
+        continue;
+      }
+
+      const shouldRun = displayedIds.has(item.id)
+        && item.status === "visible"
+        && !isPaused
+        && item.pausedAt === null;
+
+      if (!shouldRun && lifetime.startedAt !== null) {
+        lifetime.remaining -= now - lifetime.startedAt;
+        lifetime.startedAt = null;
+        timers.clearDismiss(item.id);
+      } else if (shouldRun && lifetime.startedAt === null) {
+        lifetime.startedAt = now;
+        timers.scheduleDismiss({
+          ...item,
+          createdAt: now,
+          duration: lifetime.remaining,
+          pauseDuration: 0,
+        });
+      }
+    }
+  }
+
   function ensurePresence(id: ToastId): void {
     overlayStore.open({
       id,
@@ -115,7 +148,6 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     const id = options?.id ?? generateToastId();
     const current = getItem(id);
     const now = Date.now();
-    const isUpdate = current !== undefined;
     const pausedAt = isPaused ? now : null;
 
     const mergedOptions = resolveToastOptions(type, view.toastOptions, options);
@@ -141,14 +173,11 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     };
 
     ensurePresence(id);
-    store.add(item);
+    timers.clearDismiss(id);
     timers.clearRemove(id);
-
-    if (isUpdate) {
-      timers.clearDismiss(id);
-    }
-
-    timers.scheduleDismiss(item);
+    lifetimes.set(id, { remaining: item.duration, startedAt: null });
+    store.add(item);
+    syncDismissTimers();
 
     return id;
   }
@@ -164,6 +193,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     view.limit = nextLimit;
     view.position = config.position;
     view.toastOptions = config.toastOptions;
+    syncDismissTimers();
     notify();
   }
 
@@ -215,6 +245,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
       store.dismiss(targetId);
       timers.scheduleRemove(current);
     }
+    syncDismissTimers();
   }
 
   function closeAll(): void {
@@ -227,13 +258,16 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     for (const targetId of targets) {
       timers.clearDismiss(targetId);
       timers.clearRemove(targetId);
+      lifetimes.delete(targetId);
       overlayStore.remove(targetId);
       store.remove(targetId);
     }
+    syncDismissTimers();
   }
 
   function clear(): void {
     timers.clear();
+    lifetimes.clear();
     overlayStore.clear();
     store.clear();
   }
@@ -250,20 +284,14 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     isPaused = true;
     store.startPause();
 
-    for (const item of store.getSnapshot()) {
-      timers.clearDismiss(item.id);
-    }
+    syncDismissTimers();
   }
 
   function endPause(): void {
     isPaused = false;
     store.endPause();
 
-    for (const item of store.getSnapshot()) {
-      if (item.status === "visible") {
-        timers.scheduleDismiss(item);
-      }
-    }
+    syncDismissTimers();
   }
 
   function subscribe(listener: () => void): () => void {
