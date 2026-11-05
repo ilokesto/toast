@@ -1,5 +1,14 @@
 # @ilokesto/toast
 
+## 2.0.4
+
+### Patch Changes
+
+- 810d554: Reset runtime pause ownership when clearing toast state so subsequent notifications expire normally and fresh pause cycles stay consistent with the store.
+- 38b83e7: Render per-toast and per-type positions in their own viewport regions instead of hiding notifications outside the Toaster default position. Keep the row limit shared across regions and calculate headless offsets within each position.
+- 7bc64ce: Prevent stale promise settlements from recreating cleared, removed or unmounted toast state or overwriting newer requests with the same ID. Preserve each caller's original fulfillment value or rejection and skip obsolete message resolvers.
+- 82c82d6: Start queued toast lifetimes when displayed. Preserve remaining duration across limit changes and pauses, keep closing rows in their slot until removal, and reset updated IDs without consuming their lifetime in the queue.
+
 ## 2.0.3
 
 ### Patch Changes
