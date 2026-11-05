@@ -75,6 +75,8 @@ pnpm test
 `dismiss()`는 닫기를 시작하고 `removeDelay` 후 제거하며 `remove()`는 즉시 제거합니다. Loading은 duration이 무한대이므로 같은 ID를 갱신하거나 명시적으로 닫으세요.
 
 Pause는 dismiss만 멈추고 closing 항목의 제거는 멈추지 않습니다. Resume은 일시정지 시간을 반영하며 ID 재사용은 이전 제거 예약을 취소합니다.
+`clear()`는 pause 소유권도 초기화하므로 이후 토스트는 resume 호출 없이 정상적으로
+만료됩니다. 이후 pause는 새 일시정지 주기로 시작합니다.
 
 대기 토스트의 duration은 표시 한도 `limit` 안에 들어올 때 시작합니다. 한도를
 줄여 숨겨진 항목은 남은 수명을 보존하고, 다시 표시될 때 이어서 사용합니다.

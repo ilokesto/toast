@@ -75,6 +75,8 @@ pnpm test
 `dismiss()` starts closing and removes after `removeDelay`; `remove()` removes immediately. Loading duration is infinite: update the same id or dismiss explicitly.
 
 Pause stops dismissal, not removal of closing items. Resume accounts for paused time; reusing an id cancels its old removal.
+`clear()` also resets pause ownership, so subsequent toasts run normally without
+requiring a resume call. A later pause starts a fresh pause cycle.
 
 Queued toasts start their duration when they enter the displayed `limit`.
 Reducing the limit suspends hidden items with their remaining duration intact;

@@ -291,6 +291,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   }
 
   function clear(): void {
+    isPaused = false;
     timers.clear();
     lifetimes.clear();
     pendingPromises.clear();
