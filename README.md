@@ -83,6 +83,12 @@ including when both overlap. Closing rows keep their slot until removal.
 Updating an id resets its duration, starting immediately if displayed or on
 promotion if queued. The queue and limit are shared across position regions.
 
+`clear()` (including Toaster unmount), `remove()` and newer writes to the same ID
+invalidate older promise toast updates. Obsolete settlements do not recreate
+rows, overwrite newer notifications or invoke their message resolvers.
+The returned promise still preserves its task's fulfillment value or rejection;
+invalidating the notification does not cancel the underlying task.
+
 Follow `toast.ts` → `createToastRuntime`. The runtime owns overlay presence, toast state, and subscription snapshot identity. Option merging is pure; timers only invoke runtime commands.
 
 `transport="top-layer"` uses manual popover and falls back to inline on unsupported browsers.

@@ -55,6 +55,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   const overlayStore: OverlayStoreApi = createOverlayStore();
   const timers = createToastTimers(dismiss, remove);
   const lifetimes = new Map<ToastId, { remaining: number; startedAt: number | null }>();
+  const pendingPromises = new Map<ToastId, symbol>();
   const listeners = new Set<() => void>();
   let isPaused = false;
   const view: { limit: number; position: ToastPosition; toastOptions?: DefaultToastOptions } = {
@@ -146,6 +147,11 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
 
   function addToast(type: ToastType, message: ReactNode, options?: ToastOptions): ToastId {
     const id = options?.id ?? generateToastId();
+    pendingPromises.delete(id);
+    return writeToast(id, type, message, options);
+  }
+
+  function writeToast(id: ToastId, type: ToastType, message: ReactNode, options?: ToastOptions): ToastId {
     const current = getItem(id);
     const now = Date.now();
     const pausedAt = isPaused ? now : null;
@@ -202,31 +208,49 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
     messages: PromiseToastMessages<TData>,
     options?: ToastOptions,
   ): Promise<TData> {
-    const task = typeof promise === "function" ? promise() : promise;
-    const id = addToast("loading", messages.loading, {
-      ...options,
-      duration: Number.POSITIVE_INFINITY,
-    });
+    const id = options?.id ?? generateToastId();
+    const request = Symbol();
+    const isCurrent = () => pendingPromises.get(id) === request;
+    pendingPromises.set(id, request);
+    let task: Promise<TData>;
+    try {
+      task = typeof promise === "function" ? promise() : promise;
+    } catch (error) {
+      if (isCurrent()) {
+        pendingPromises.delete(id);
+      }
+      throw error;
+    }
+    if (isCurrent()) {
+      writeToast(id, "loading", messages.loading, {
+        ...options,
+        duration: Number.POSITIVE_INFINITY,
+      });
+    }
 
     try {
       const data = await task;
-      const successMessage = resolveValue(messages.success, data);
-
-      addToast("success", successMessage, {
-        ...options,
-        id,
-      });
+      if (isCurrent()) {
+        const successMessage = resolveValue(messages.success, data);
+        if (isCurrent()) {
+          addToast("success", successMessage, { ...options, id });
+        }
+      }
 
       return data;
     } catch (error) {
-      const errorMessage = resolveValue(messages.error, error);
-
-      addToast("error", errorMessage, {
-        ...options,
-        id,
-      });
+      if (isCurrent()) {
+        const errorMessage = resolveValue(messages.error, error);
+        if (isCurrent()) {
+          addToast("error", errorMessage, { ...options, id });
+        }
+      }
 
       throw error;
+    } finally {
+      if (isCurrent()) {
+        pendingPromises.delete(id);
+      }
     }
   }
 
@@ -259,6 +283,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
       timers.clearDismiss(targetId);
       timers.clearRemove(targetId);
       lifetimes.delete(targetId);
+      pendingPromises.delete(targetId);
       overlayStore.remove(targetId);
       store.remove(targetId);
     }
@@ -268,6 +293,7 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   function clear(): void {
     timers.clear();
     lifetimes.clear();
+    pendingPromises.clear();
     overlayStore.clear();
     store.clear();
   }
