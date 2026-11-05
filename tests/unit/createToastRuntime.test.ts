@@ -190,7 +190,7 @@ describe("createToastRuntime", () => {
   });
 
   describe("configureView", () => {
-    it("filters toasts by position in getSnapshot", () => {
+    it("includes toasts at different positions in getSnapshot", () => {
       const runtime = createRuntime();
 
       runtime.configureView({
@@ -202,8 +202,7 @@ describe("createToastRuntime", () => {
       runtime.addToast("blank", "B", { position: "bottom-left" });
 
       const visible = runtime.getSnapshot();
-      expect(visible).toHaveLength(1);
-      expect(visible[0].message).toBe("A");
+      expect(visible.map((item) => item.message)).toEqual(["A", "B"]);
     });
 
     it("limits visible toasts to configured limit", () => {

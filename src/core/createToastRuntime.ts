@@ -25,19 +25,19 @@ import {
 } from "./utils";
 
 /**
- * @description Creates an isolated toast runtime coordinating state, overlay presence, timers and the active view.
+ * @description Creates an isolated toast runtime coordinating state, overlay presence, timers and rows across viewport positions.
  * @param {string} toasterId - Identifier of the mounted toaster that owns the notification.
  * @returns {ToastRuntimeApi} Runtime owning this toaster and its lifecycle controls.
  * - toasterId `string` - Identifier of the mounted toaster that owns the notification.
  * - addToast `(type: ToastType, message: ReactNode, options?: ToastOptions | undefined) => string` - Creates or updates a toast and schedules its lifecycle timers.
- * - configureView `(config: { limit: number; position: ToastPosition; toastOptions?: DefaultToastOptions | undefined; }) => void` - Sets the active region, row limit and default options.
+ * - configureView `(config: { limit: number; position: ToastPosition; toastOptions?: DefaultToastOptions | undefined; }) => void` - Sets the default position, runtime-wide row limit and default options.
  * - promiseToast `<TData>(promise: Promise<TData> | (() => Promise<TData>), messages: PromiseToastMessages<TData>, options?: ToastOptions | undefined) => Promise<TData>` - Updates a loading toast on promise settlement and preserves the result or rejection.
  * - dismiss `(id?: string | undefined) => void` - Marks the selected toast closing while retaining its exit animation.
  * - closeAll `() => void` - Dismisses every toast using the normal exit lifecycle.
  * - remove `(id?: string | undefined) => void` - Immediately removes the selected toast and clears its timers.
  * - clear `() => void` - Immediately clears all items and timing state.
  * - updateHeight `(id: string, height: number) => void` - Records the measured row height in pixels.
- * - getRawSnapshot `() => readonly ToastItem[]` - Reads all runtime items, including items outside the active view.
+ * - getRawSnapshot `() => readonly ToastItem[]` - Reads all runtime items, including items beyond the row limit.
  * - startPause `() => void` - Pauses automatic dismissal for visible notifications.
  * - endPause `() => void` - Resumes dismissal after accounting for time spent paused.
  * - subscribe `(listener: () => void) => () => void` - Subscribes to changes and returns an unsubscribe function.
@@ -63,12 +63,10 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   const visibleSnapshotCache: {
     items: ReadonlyArray<ToastItem> | null;
     limit: number;
-    position: ToastPosition;
     visibleItems: ReadonlyArray<ToastItem>;
   } = {
     items: null,
     limit: Number.POSITIVE_INFINITY,
-    position: DEFAULT_POSITION as ToastPosition,
     visibleItems: [],
   };
 
@@ -87,18 +85,14 @@ export function createToastRuntime(toasterId: ToasterId): ToastRuntimeApi {
   function getVisibleItems(items: ReadonlyArray<ToastItem>): ReadonlyArray<ToastItem> {
     if (
       visibleSnapshotCache.items === items
-      && visibleSnapshotCache.position === view.position
       && visibleSnapshotCache.limit === view.limit
     ) {
       return visibleSnapshotCache.visibleItems;
     }
 
-    const visibleItems = items
-      .filter((item) => item.position === view.position)
-      .slice(0, view.limit);
+    const visibleItems = items.slice(0, view.limit);
 
     visibleSnapshotCache.items = items;
-    visibleSnapshotCache.position = view.position;
     visibleSnapshotCache.limit = view.limit;
     visibleSnapshotCache.visibleItems = visibleItems;
 

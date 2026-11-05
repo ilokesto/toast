@@ -63,12 +63,12 @@ function getRegionStyle(position: ToastPosition, gutter: number): CSSProperties 
 }
 
 /**
- * @description Mounts an isolated toaster runtime, renders its active region and pauses dismissal while the pointer is inside.
+ * @description Mounts an isolated toaster runtime, groups rows by their viewport position and pauses dismissal while the pointer is inside.
  * @param {ToasterProps} props - Properties for the rendered component.
  * @param {string | undefined} [props.toasterId] - Identifier of the mounted toaster that owns the notification.
  * @param {ToastPosition | undefined} [props.position] - Viewport region used to group and align toast rows.
  * @param {ToastTransport | undefined} [props.transport] - Inline rendering or the browser popover top layer with inline fallback.
- * @param {number | undefined} [props.limit] - Maximum number of rows exposed by the active view.
+ * @param {number | undefined} [props.limit] - Maximum number of rows exposed across all viewport positions.
  * @param {boolean | undefined} [props.reverseOrder] - Whether to place the newest item before older items.
  * @param {number | undefined} [props.gutter] - Spacing between toast rows in pixels.
  * @param {CSSProperties | undefined} [props.containerStyle] - Inline style overrides for the viewport container.
@@ -200,22 +200,19 @@ export function Toaster({
     });
   }, [activePosition, limit, runtime, toastOptions]);
 
-  const orderedItems = useMemo(() => {
-    return reverseOrder ? [...items].reverse() : items;
-  }, [items, reverseOrder]);
-
-  const containerStyleValue = useMemo<CSSProperties>(
-    () => ({
-      ...getContainerStyle(activePosition),
-      ...containerStyle,
-    }),
-    [activePosition, containerStyle],
-  );
-
-  const regionStyle = useMemo<CSSProperties>(
-    () => getRegionStyle(activePosition, gutter),
-    [activePosition, gutter],
-  );
+  const regions = useMemo(() => {
+    const grouped = new Map<ToastPosition, ToastItem[]>([[activePosition, []]]);
+    const ordered = reverseOrder ? [...items].reverse() : items;
+    for (const item of ordered) {
+      const region = grouped.get(item.position);
+      if (region === undefined) {
+        grouped.set(item.position, [item]);
+      } else {
+        region.push(item);
+      }
+    }
+    return [...grouped];
+  }, [activePosition, items, reverseOrder]);
 
   const createHelpers = useCallback(
     (item: ToastItem): ToastRowHelpers => ({
@@ -233,39 +230,35 @@ export function Toaster({
     runtime.endPause();
   }, [runtime]);
 
-  const rows = orderedItems.map((item) => {
-    const helpers = createHelpers(item);
-    const content = renderRow === undefined
-      ? <ToastBar toast={item} position={activePosition} />
-      : renderRow(item, helpers);
-
-    return (
-      <ToastMeasure
-        key={item.id}
-        item={item}
-        onHeight={runtime.updateHeight}
-      >
-        {content}
-      </ToastMeasure>
-    );
-  });
-
   const Container = transport === "top-layer" ? TopLayerContainer : InlineContainer;
 
   return (
     <ToasterContext.Provider value={runtime}>
       <style>{toasterStyles}</style>
-      <Container className={containerClassName} style={containerStyleValue}>
-        <div
-          role="region"
-          aria-label="Notifications"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          style={regionStyle}
+      {regions.map(([regionPosition, regionItems]) => (
+        <Container
+          key={regionPosition === activePosition ? "default" : regionPosition}
+          className={containerClassName}
+          style={{ ...getContainerStyle(regionPosition), ...containerStyle }}
         >
-          {rows}
-        </div>
-      </Container>
+          <div
+            role="region"
+            aria-label="Notifications"
+            data-toast-position={regionPosition}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={getRegionStyle(regionPosition, gutter)}
+          >
+            {regionItems.map((item) => (
+              <ToastMeasure key={item.id} item={item} onHeight={runtime.updateHeight}>
+                {renderRow === undefined
+                  ? <ToastBar toast={item} position={item.position} />
+                  : renderRow(item, createHelpers(item))}
+              </ToastMeasure>
+            ))}
+          </div>
+        </Container>
+      ))}
     </ToasterContext.Provider>
   );
 }
