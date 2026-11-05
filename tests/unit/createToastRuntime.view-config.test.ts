@@ -83,7 +83,7 @@ describe("createToastRuntime view configuration", () => {
     });
   });
 
-  it("invalidates the visible snapshot when position changes", () => {
+  it("preserves resolved positions and snapshot identity when the default position changes", () => {
     // Given
     runtime = createToastRuntime("position-runtime");
     runtime.configureView({ limit: 10, position: "top-right" });
@@ -104,8 +104,9 @@ describe("createToastRuntime view configuration", () => {
 
     // Then
     const bottomSnapshot = runtime.getSnapshot();
-    expect(bottomSnapshot).not.toBe(topSnapshot);
-    expect(bottomSnapshot.map((item) => item.message)).toEqual(["Bottom toast"]);
+    expect(bottomSnapshot).toBe(topSnapshot);
+    expect(bottomSnapshot.map((item) => item.message)).toEqual(["Top toast", "Bottom toast"]);
+    expect(bottomSnapshot.map((item) => item.position)).toEqual(["top-right", "bottom-left"]);
   });
 
   it("invalidates the visible snapshot when limit changes", () => {

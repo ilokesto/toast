@@ -52,6 +52,11 @@ export function App() {
 
 Use a unique `toasterId` for each stack. `useToaster()` belongs in a descendant custom renderer under `Toaster`. Default rows provide status/alert live regions; replacing the whole row makes you responsible for its `role` and live-region accessibility.
 
+The `position` prop sets the default for new toasts. Per-toast and per-type
+`position` options render in their own viewport regions within the same Toaster.
+`limit` applies across all regions; `reverseOrder` and `gutter` apply within each
+region. Changing the default position keeps existing toasts at their resolved positions.
+
 [Migrate from react-hot-toast](./MIGRATION_FROM_REACT_HOT_TOAST.md)
 
 <details>

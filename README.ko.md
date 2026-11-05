@@ -1,5 +1,10 @@
 # @ilokesto/toast
 
+`position` prop은 새 토스트의 기본 위치를 정합니다. 개별 토스트와 타입별 기본
+옵션에 지정한 `position`은 같은 Toaster 안에서 각각의 화면 영역에 표시됩니다.
+`limit`은 모든 영역을 합친 표시 한도이며 `reverseOrder`와 `gutter`는 영역별로
+적용됩니다. 기본 위치를 바꿔도 기존 토스트는 생성할 때 결정된 위치에 남습니다.
+
 익숙한 `toast.*` API, 기본 UI와 커스텀 렌더링을 제공하는 React 알림 패키지입니다.
 
 [![npm version](https://img.shields.io/npm/v/%40ilokesto%2Ftoast?style=flat&color=555)](https://www.npmjs.com/package/@ilokesto/toast)

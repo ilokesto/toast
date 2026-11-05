@@ -16,7 +16,7 @@ import { useToastItems } from "./useToastItems";
  * : handlers.updateHeight `(id: string, height: number) => void` - Records the measured row height in pixels.
  * : handlers.startPause `() => void` - Pauses automatic dismissal for visible notifications.
  * : handlers.endPause `() => void` - Resumes dismissal after accounting for time spent paused.
- * : handlers.calculateOffset `(toast: ToastItem, options?: ToastOffsetOptions | undefined) => number` - Returns the summed heights and gutters of preceding rows in pixels.
+ * : handlers.calculateOffset `(toast: ToastItem, options?: ToastOffsetOptions | undefined) => number` - Returns the summed heights and gutters of preceding rows at the same position in pixels.
  * @example
  * ```tsx
  * function Summary() {
@@ -39,7 +39,8 @@ export function useToaster(): UseToasterResult {
   const calculateOffset = useCallback(
     (toast: ToastItem, options?: ToastOffsetOptions): number => {
       const gutter = options?.gutter ?? DEFAULT_GUTTER;
-      const ordered = options?.reverseOrder ? [...toasts].reverse() : toasts;
+      const positioned = toasts.filter((item) => item.position === toast.position);
+      const ordered = options?.reverseOrder ? positioned.reverse() : positioned;
       const index = ordered.findIndex((item) => item.id === toast.id);
 
       if (index === -1) {
