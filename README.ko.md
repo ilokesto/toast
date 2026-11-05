@@ -76,6 +76,12 @@ pnpm test
 
 Pause는 dismiss만 멈추고 closing 항목의 제거는 멈추지 않습니다. Resume은 일시정지 시간을 반영하며 ID 재사용은 이전 제거 예약을 취소합니다.
 
+대기 토스트의 duration은 표시 한도 `limit` 안에 들어올 때 시작합니다. 한도를
+줄여 숨겨진 항목은 남은 수명을 보존하고, 다시 표시될 때 이어서 사용합니다.
+숨겨진 시간과 pause 시간은 겹쳐도 수명에서 제외됩니다. Closing 항목은 제거될
+때까지 자리를 차지합니다. 같은 ID 갱신은 수명을 초기화하며 대기 중이면 표시될
+때 새 수명을 시작합니다. 큐와 한도는 모든 위치 영역이 공유합니다.
+
 명령은 `toast.ts` → `createToastRuntime` 순서로 읽으세요. Runtime은 overlay presence, toast 상태와 구독 snapshot identity를 소유합니다. 옵션 병합은 순수 계산이고 timer는 runtime 명령만 호출합니다.
 
 `transport="top-layer"`는 manual popover를 사용하고 미지원 브라우저에서는 inline으로 전환합니다.
